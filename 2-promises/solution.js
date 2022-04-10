@@ -7,7 +7,7 @@ INSTRUCTIONS
 4. methods should be consumed sequentially, i.e. lastnames method first, and its results will serve as argument for firstnames method
 5. implement a randomizing logic that provides you a value to be used as id for lastnames method,
 this value type must be a positive integer between 0-100, or something that is not a positive integer
-The point here is having correct and incorrect values to generate successful and failing 2-promises results from lastnames method
+The point here is having correct and incorrect values to generate successful and failing promises results from lastnames method
 
 Example:
 const id = yourRandomMethod() //first run
