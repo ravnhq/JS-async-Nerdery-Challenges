@@ -12,5 +12,4 @@ This repo provides a series of exercises to put your js async understanding into
 6. Push your work to GitHub
 7. Create a PR to the repo for revision
 8. Don't forget to tag your Nerdery mentors accordingly in the PR for revision
-
-
+9. Any questions or doubts, reach me as 'Antonio Mata' in Slack
