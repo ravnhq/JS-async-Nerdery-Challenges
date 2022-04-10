@@ -13,3 +13,8 @@ This repo provides a series of exercises to put your js async understanding into
 7. Create a PR to the repo for revision
 8. Don't forget to tag your Nerdery mentors accordingly in the PR for revision
 9. Any questions or doubts, reach me as 'Antonio Mata' in Slack
+
+## Requirements
+
+1. basic understanding of JS and Node.js
+2. Node.js 16, or later
