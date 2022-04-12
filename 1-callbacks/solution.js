@@ -31,14 +31,37 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 */
 
+const validateUser = require('./validate-user');
+
+const formatValidation = () => {
+   /* Success
+
+    id:1
+    name: John
+    
+    id:2
+    name: Mary
+    
+    Failure
+    
+    User Michael not allowed
+    User Benjamin not allowed
+    */
+}
+
+const logValidation = (value) => {
+    console.log(value);
+}
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
-
-    // you get your 5 names here
-
+    const users = ['Charly', 'Michelle', 'John', 'Richard', 'Marcus'];
+    
+    for (const user of users) {
+        validateUser(user, formatValidation);
+    }
     // iterate the names array and validate them with the method
-
     // log the final result
+    logValidation();
 }
 
 solution()
