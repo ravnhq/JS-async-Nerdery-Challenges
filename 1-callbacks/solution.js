@@ -52,10 +52,7 @@ function solution() {
   const showResults = () => {
     console.log("Success");
     for (let name of success) {
-      console.log(`
-id:${name.id}
-name: ${name.name}
-`);
+      console.log(`\nid:${name.id}\nname: ${name.name}`);
     }
     console.log("Failure \n");
     for (let name of failure) {
