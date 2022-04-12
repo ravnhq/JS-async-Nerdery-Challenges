@@ -1,15 +1,15 @@
-'use strict'
+"use strict";
 
-const allowedUsers = ['John', 'Mary', 'Richard', 'Stacy']
+const allowedUsers = ["John", "Mary", "Richard", "Stacy"];
 
-module.exports = (name, cb) => {
+module.exports = (name, cb) =>
+  new Promise(function (resolve) {
     if (!allowedUsers.includes(name)) {
-        cb(Error(`User ${name} not allowed`))
-        return
+      return resolve(cb(Error(`User ${name} not allowed`)));
     }
 
     setTimeout(() => {
-        const id = Math.floor(Math.random() * 101)
-        cb(null, {id, name})
-    }, 300)
-}
+      const id = Math.floor(Math.random() * 101);
+      resolve(cb(null, { id, name }));
+    }, 300);
+  });
