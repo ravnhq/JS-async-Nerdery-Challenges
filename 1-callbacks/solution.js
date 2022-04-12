@@ -1,3 +1,5 @@
+const validateUser = require("./validate-user");
+
 /*
 INSTRUCTIONS
 
@@ -32,15 +34,42 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE}
+  const names = ["John", "Martha", "Mary", "Gabo", "Juana"];
+  const failure = [];
+  const success = [];
+  const format = (parm, text) => {
+    if (parm == null) {
+      success.push(text);
+    } else {
+      failure.push(parm.message);
+    }
 
-    // you get your 5 names here
+    if (success.length + failure.length == names.length) {
+      showResults();
+    }
+  };
+  const showResults = () => {
+    console.log("Success");
+    for (let name of success) {
+      console.log(`
+id:${name.id}
+name: ${name.name}
+`);
+    }
+    console.log("Failure \n");
+    for (let name of failure) {
+      console.log(name);
+    }
+  };
 
-    // iterate the names array and validate them with the method
+  for (let name of names) {
+    validateUser(name, format);
+  }
 
-    // log the final result
+  // you get your 5 names here
+  // iterate the names array and validate them with the method
+  // log the final result
 }
 
-solution()
-
-
+solution();
