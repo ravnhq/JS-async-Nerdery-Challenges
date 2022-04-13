@@ -7,7 +7,7 @@ module.exports = async (id) => {
         throw Error('ID type is incorrect')
     }
 
-    if (Number < 0 || !Number.isInteger(id)) {
+    if (id < 0 || !Number.isInteger(id)) {
         throw Error('ID type must be a positive integer')
     }
 
