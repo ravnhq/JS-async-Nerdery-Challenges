@@ -43,19 +43,19 @@ function solution() {
     const type = getType();
     return typeFunction[type]();
   };
-
-  getLastName(randonMetod())
+  //You call the lastnames method with your id
+  const data = getLastName(randonMetod())
     .then((res) => {
       fullName += res + " ";
+      // Now, with your recently obtained lastname you call the firstname method
       return getFirstName(res);
     })
-    .then((res) => console.log(fullName + res))
-    .catch((error) => console.log(error.message));
+    .then((res) => fullName + res)
+    .catch((error) => error.message);
 
-  // You call the lastnames method with your id
-  // Now, with your recently obtained lastname you call the firstname method
   // You log the full name here
   // If there's an error, log it
+  const result = data.then((res) => console.log(res));
 }
 
 solution();
