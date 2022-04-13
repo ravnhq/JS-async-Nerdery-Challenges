@@ -23,17 +23,53 @@ const id = yourRandomMethod() //third run
 7. log the resultant full name, or the error at the final
 */
 
+const lastnamesFile = require('./lastnames');
+const firstnamesFile = require('./firstnames');
+var completeName = [];
+
 function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    let randomId = generateRandomId();
 
     // You call the lastnames method with your id
+    lastnamesFile(randomId)
+    .then(function(lastName){
+        showOutput(lastName);
+        return firstnamesFile(lastName);
+    })
+    .then(firstName => showOutput(firstName))
+    .catch(error => showOutput(error));
 
     // Now, with your recently obtained lastname you call the firstname method
+    // ***** Obtained lastname is in the above chain
 
     // You log the full name here
     // If there's an error, log it
+    // ***** Output is as a showOutput in the above chain
+  
+}
+
+function generateRandomId(){
+    let randomId = Math.floor((Math.random() * 101));
+    if(randomId % 7 === 0){
+        randomId = "ErrorFatal";
+    }
+    return randomId;
+}
+
+function showOutput(result){
+
+    if(result instanceof Error){
+        console.log(`${result.message}`);
+    } else{
+        completeName.push(result);        
+    }
+
+    if(completeName.length === 2){
+        console.log(`${completeName[1]} ${completeName[0]}`);
+    }
 }
 
 solution()
