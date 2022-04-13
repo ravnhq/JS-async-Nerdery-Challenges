@@ -29,7 +29,15 @@ function solution() {
   // YOUR SOLUTION GOES HERE
   // You generate your id value here
   let fullName = "";
-  const types = ["number", "boolean", "string", "null", "undefined", "decimal"];
+  const types = [
+    "number",
+    "boolean",
+    "string",
+    "null",
+    "undefined",
+    "decimal",
+    "negative",
+  ];
   const getType = () => types[Math.floor(Math.random() * (types.length - 1))];
 
   const typeFunction = {
