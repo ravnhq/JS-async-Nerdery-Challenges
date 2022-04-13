@@ -31,28 +31,33 @@ function solution() {
   let fullName = "";
   const types = ["number", "boolean", "string", "null", "undefined", "decimal"];
   const getType = () => types[Math.floor(Math.random() * (types.length - 1))];
+
   const typeFunction = {
     number: () => Math.floor(Math.random() * 101),
     boolean: () => !!Math.floor(Math.random() * 1),
     string: () => "Hi, i am string",
     null: () => null,
     undefined: () => undefined,
-    decimal: () => 0 - Math.random() * 100,
+    decimal: () => Math.random() * 100,
+    negative: () => Math.floor(0 - Math.random() * 100),
   };
+
   const randonMetod = () => {
     const type = getType();
     return typeFunction[type]();
   };
   //You call the lastnames method with your id
-  const data = getLastName(randonMetod())
+  const id = randonMetod();
+
+  const data = getLastName(id)
     .then((res) => {
       fullName += res + " ";
       // Now, with your recently obtained lastname you call the firstname method
+
       return getFirstName(res);
     })
     .then((res) => fullName + res)
     .catch((error) => error.message);
-
   // You log the full name here
   // If there's an error, log it
   const result = data.then((res) => console.log(res));

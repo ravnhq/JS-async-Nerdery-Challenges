@@ -25,10 +25,8 @@ the format is up to you
 
 async function solution() {
   // YOUR SOLUTION GOES HERE
-
   // You generate your id value here
   const id = Number(Date.now().toString().slice(-2));
-
   // You use Promise.all here
   const data = Promise.all([products(id), price(id)])
     .then(
@@ -38,20 +36,13 @@ async function solution() {
     price: ${res[1]},\n}`
     )
     .catch((error) => Promise.reject(new Error(error.message)));
-  // .finally(
-  //   Promise.allSettled([products(id), price(id)]).then((values) =>
-  //     console.log(values)
-  //   )
-  // );
 
   try {
     const result = await data;
     console.log(result);
   } catch (error) {
     console.log("Error: " + error.message);
-    const status = await Promise.allSettled([products(id), price(id)]).then(
-      (values) => values
-    );
+    const status = await Promise.allSettled([products(id), price(id)]);
     const [
       { status: statusOne, value: valuePromiseOne, reason: reasonOne },
       { status: statusTwo, value: valuePromiseTwo, reason: reasonTwo },
