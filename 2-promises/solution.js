@@ -63,7 +63,7 @@ function solution() {
 
   const data = getLastName(id)
     .then((lastName) => {
-      fullName += res + " ";
+      fullName += lastName + " ";
       // Now, with your recently obtained lastname you call the firstname method
       return getFirstName(lastName);
     })
