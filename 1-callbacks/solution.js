@@ -35,20 +35,24 @@ node solution.js name1 name2 name3
 
 function solution() {
   // YOUR SOLUTION GOES HERE}
+  // you get your 5 names here
   const names = ["John", "Martha", "Mary", "Gabo", "Juana"];
   const failure = [];
   const success = [];
-  const format = (parm, text) => {
-    if (parm == null) {
-      success.push(text);
+  //load Data
+  const loadData = (error, object) => {
+    if (error == null) {
+      success.push(object);
     } else {
-      failure.push(parm.message);
+      failure.push(error.message);
     }
 
     if (success.length + failure.length == names.length) {
       showResults();
     }
   };
+
+  //show results function
   const showResults = () => {
     console.log("Success");
     for (let name of success) {
@@ -60,12 +64,11 @@ function solution() {
     }
   };
 
+  // iterate the names array and validate them with the method
   for (let name of names) {
-    validateUser(name, format);
+    validateUser(name, loadData);
   }
 
-  // you get your 5 names here
-  // iterate the names array and validate them with the method
   // log the final result
 }
 
