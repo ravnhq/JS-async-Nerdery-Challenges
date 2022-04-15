@@ -58,9 +58,7 @@ function solution() {
   // You generate your id value here
   const id = randonMetod();
   let fullName = "";
-
   //You call the lastnames method with your id
-
   const data = getLastName(id)
     .then((lastName) => {
       fullName += lastName + " ";

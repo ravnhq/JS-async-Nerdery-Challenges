@@ -33,39 +33,55 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 */
 
+//Complementing challenge with optional part 4
+//here you get the array of names entered by the console or not
+const evaluateDataTerminal = () => {
+  if (process.argv.length !== 2) {
+    return process.argv.slice(2);
+  } else {
+    return ["Gabo", "Martha", "John", "Mary", "Juan"];
+  }
+};
+
+//show results function
+const showResults = (successArray, failureArray) => {
+  console.log("Success");
+  for (let name of successArray) {
+    console.log(`\nid:${name.id}\nname: ${name.name}`);
+  }
+  console.log("\nFailure \n");
+  for (let failure of failureArray) {
+    console.log(failure);
+  }
+};
+
 function solution() {
   // YOUR SOLUTION GOES HERE}
   // you get your 5 names here
-  const names = ["John", "Martha", "Mary", "Gabo", "Juana"];
-  const failure = [];
-  const success = [];
+  const namesAuxArray = evaluateDataTerminal();
+
+  //here the first letter of the names is transformed to uppercase to be evaluated
+  const namesArray = namesAuxArray.map(
+    (element) => element.charAt(0).toUpperCase() + element.slice(1)
+  );
+
+  const failureArray = [];
+  const successArray = [];
   //load Data
   const loadData = (error, object) => {
     if (error == null) {
-      success.push(object);
+      successArray.push(object);
     } else {
-      failure.push(error.message);
+      failureArray.push(error.message);
     }
 
-    if (success.length + failure.length == names.length) {
-      showResults();
-    }
-  };
-
-  //show results function
-  const showResults = () => {
-    console.log("Success");
-    for (let name of success) {
-      console.log(`\nid:${name.id}\nname: ${name.name}`);
-    }
-    console.log("Failure \n");
-    for (let name of failure) {
-      console.log(name);
+    if (successArray.length + failureArray.length == namesArray.length) {
+      showResults(successArray, failureArray);
     }
   };
 
   // iterate the names array and validate them with the method
-  for (let name of names) {
+  for (let name of namesArray) {
     validateUser(name, loadData);
   }
 

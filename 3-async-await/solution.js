@@ -35,31 +35,34 @@ async function solution() {
     id: ${id},\n    product: ${res[0]},
     price: ${res[1]},\n}`
     )
-    .catch((error) => Promise.reject(new Error(error.message)));
+    .catch((error) => {
+      throw new Error(error.message);
+    });
 
   try {
     const result = await data;
     console.log(result);
   } catch (error) {
     console.log("Error: " + error.message);
-    const status = await Promise.allSettled([products(id), price(id)]);
-    const [
-      { status: statusOne, value: valuePromiseOne, reason: reasonOne },
-      { status: statusTwo, value: valuePromiseTwo, reason: reasonTwo },
-    ] = status;
-    console.log(`
-      Info Data Promises
-      __Products:
-      status: ${statusOne}
-      ${valuePromiseOne ? "value: " + valuePromiseOne : reasonOne}
-      __Prices:
-      status: ${statusTwo}
-      ${valuePromiseTwo ? "value: " + valuePromiseTwo : reasonTwo}`);
   }
 
   // You use Promise.allSettled here
+  const status = await Promise.allSettled([products(id), price(id)]);
+  const [
+    { status: statusOne, value: valuePromiseOne, reason: reasonOne },
+    { status: statusTwo, value: valuePromiseTwo, reason: reasonTwo },
+  ] = status;
 
   // Log the results or errors here
+
+  console.log(`
+    Info Data Promises
+    __Products:
+    status: ${statusOne}
+    ${valuePromiseOne ? "value: " + valuePromiseOne : reasonOne}
+    __Prices:
+    status: ${statusTwo}
+    ${valuePromiseTwo ? "value: " + valuePromiseTwo : reasonTwo}`);
 }
 
 solution();
