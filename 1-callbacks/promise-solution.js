@@ -17,7 +17,7 @@ function solution() {
             let results = values;
             results.map((result) => {
                 if (result.status === 'fulfilled') {
-                    validationResult.success.push(result.value);
+                    validationResult.success.push(`id: ${result.value.id} name: ${result.value.name}`);
                 } else {
                     validationResult.failure.push(result.reason.message);
                 }

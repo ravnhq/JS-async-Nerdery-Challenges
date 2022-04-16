@@ -23,47 +23,32 @@ User Benjamin not allowed
 4. if you want to challenge yourself, add the needed logic so the program can read the array of names from the terminal
 ** check about node.js process.argv **
 
-Example:
-
-node solution.js name1,name2,name3, or
-node solution.js name1 name2 name3
-
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 */
 
-const validateUser = require('./validate-user');
-
-const formatValidation = () => {
-   /* Success
-
-    id:1
-    name: John
-    
-    id:2
-    name: Mary
-    
-    Failure
-    
-    User Michael not allowed
-    User Benjamin not allowed
-    */
-}
-
-const logValidation = (value) => {
-    console.log(value);
-}
+const validate = require('./validate-user');
 
 function solution() {
     const users = ['Charly', 'Michelle', 'John', 'Richard', 'Marcus'];
-    
-    for (const user of users) {
-        validateUser(user, formatValidation);
+    const validationResult = {
+        success: [],
+        failure: [],
     }
-    // iterate the names array and validate them with the method
-    // log the final result
-    logValidation();
+
+    for (const user of users) {
+        validate(user, formatValidation);
+    } 
+
+    function formatValidation(err, value){
+        if (err) {
+            validationResult.failure.push(err.message);
+        } else {
+            validationResult.success.push(`id: ${value.id} name: ${value.name}`);
+        }
+        if (validationResult.success.length + validationResult.failure.length === users.length) {
+            console.log(validationResult)
+        }
+    }
 }
 
 solution()
-
-
