@@ -35,9 +35,9 @@ function solution() {
 
     // You call the lastnames method with your id
     lastnamesFile(randomId)
-    .then(function(lastName){
+    .then((lastName) => {
         showOutput(lastName);
-        return firstnamesFile(lastName);
+        return firstnamesFile(lastName)
     })
     .then(firstName => showOutput(firstName))
     .catch(error => showOutput(error));
@@ -48,6 +48,14 @@ function solution() {
     // You log the full name here
     // If there's an error, log it
     // ***** Output is as a showOutput in the above chain
+
+    // lastnamesFile(randomId)
+    // .then(function(lastName){
+    //     showOutput(lastName);
+    //     return firstnamesFile(lastName);
+    // })
+    // .then(firstName => showOutput(firstName))
+    // .catch(error => showOutput(error));
   
 }
 
