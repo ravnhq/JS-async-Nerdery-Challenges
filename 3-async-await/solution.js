@@ -85,9 +85,21 @@ function solution() {
         }   
     }
 
-    asyncPromAll();
-    asyncPromAllSettled();
+    //asyncPromAll();
+    //asyncPromAllSettled();
     
+    // as an extra challenge add Promise.race() and Promise.any(), and try to get the idea of what happens
+
+    Promise.race([getProduct(id), getPrice(id)])
+        // will return the first promise settled, either fulfilled or rejected
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err.message))
+
+
+    Promise.any([getProduct(id), getPrice(id)])
+        // will return the first promise to be fulfilled or error if all reject
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err.message))
 }
 
 solution()
