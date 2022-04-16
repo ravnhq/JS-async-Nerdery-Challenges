@@ -34,7 +34,7 @@ node solution.js name1 name2 name3
 const validateUser = require('./validate-user.js');
 const validatedNames = [];
 const noValidatedNames = [];
-var names = [];
+let names = [];
 
 function solution() {
     // YOUR SOLUTION GOES HERE
@@ -48,7 +48,7 @@ function solution() {
     }
 
     // log the final result
-    // The log is within sortUsers callback
+    // The log is within sortUsers callback line 63
 
 }
 
@@ -80,6 +80,4 @@ function printSortedUsers(){
     }
 }
 
-solution()
-
-
+solution()  

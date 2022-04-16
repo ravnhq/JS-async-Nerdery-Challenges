@@ -1,0 +1,58 @@
+//Additional challenge with process.argv
+
+const validateUser = require('./validate-user.js');
+const process = require('process');
+
+const validatedNames = [];
+const noValidatedNames = [];
+let names = [];
+
+function solution() {
+    // YOUR SOLUTION GOES HERE
+
+    // you get your 5 names here
+    let introducedValues = process.argv;
+
+    if(introducedValues.length === 2) console.log("You should introduce at least one name");
+
+    names = introducedValues.slice(2);
+
+    // iterate the names array and validate them with the method
+    for(let name of names){
+        validateUser(name, sortUsers);
+    }
+
+    // log the final result
+    // The log is within sortUsers callback
+
+}
+
+function sortUsers(error, success){
+
+    if(error instanceof Error){
+        noValidatedNames.push(error.message);
+    }else{
+        validatedNames.push(success);
+    }
+    if(validatedNames.length + noValidatedNames.length === names.length){
+        printSortedUsers();
+    }
+
+}
+
+function printSortedUsers(){
+    
+    console.log("Success\n");
+    
+    for(let user of validatedNames){
+        console.log(`id:${user.id}`);
+        console.log(`name:${user.name}\n`);
+    }
+
+    console.log("Failure\n");
+    for(let user of noValidatedNames){
+        console.log(user);
+    }
+}
+
+solution() 
