@@ -21,7 +21,7 @@ function solution() {
   );
 
   const loadData = (error, person) => {
-    if (error == null) {
+    if (error === null) {
       return person;
     } else {
       return error.message;

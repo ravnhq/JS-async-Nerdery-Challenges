@@ -69,13 +69,13 @@ function solution() {
   const successArray = [];
   //load Data
   const loadData = (error, person) => {
-    if (error == null) {
+    if (error === null) {
       successArray.push(person);
     } else {
       failureArray.push(error.message);
     }
 
-    if (successArray.length + failureArray.length == namesArray.length) {
+    if (successArray.length + failureArray.length === namesArray.length) {
       showResults(successArray, failureArray);
     }
   };
