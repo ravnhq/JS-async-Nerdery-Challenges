@@ -46,8 +46,8 @@ const evaluateDataTerminal = () => {
 //show results function
 const showResults = (successArray, failureArray) => {
   console.log("Success");
-  for (let name of successArray) {
-    console.log(`\nid:${name.id}\nname: ${name.name}`);
+  for (let person of successArray) {
+    console.log(`\nid:${person.id}\nname: ${person.name}`);
   }
   console.log("\nFailure \n");
   for (let failure of failureArray) {
@@ -68,9 +68,9 @@ function solution() {
   const failureArray = [];
   const successArray = [];
   //load Data
-  const loadData = (error, object) => {
+  const loadData = (error, person) => {
     if (error == null) {
-      successArray.push(object);
+      successArray.push(person);
     } else {
       failureArray.push(error.message);
     }
