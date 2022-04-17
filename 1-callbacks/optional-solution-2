@@ -1,0 +1,37 @@
+//Additional challenge: Promisify the callback
+
+const validateUser = require('./validate-user-2.js');
+const validatedNames = [];
+const noValidatedNames = [];
+let names = [];
+
+async function solution() {
+    // YOUR SOLUTION GOES HERE
+    // you get your 5 names here
+    names = ["John", "Mary", "Delia", "Roberto", "Melissa"];
+    
+    // iterate the names array and validate them with the method
+    for(let name of names){
+        await validateUser(name)
+        .then((success) => validatedNames.push(success))
+        .catch(error => noValidatedNames.push(error.message))
+    }
+    // log the final result
+    printSortedUsers();
+}
+
+function printSortedUsers(){
+    
+    console.log("Success\n");
+    
+    for(let user of validatedNames){
+        console.log(`id:${user.id}`);
+        console.log(`name:${user.name}\n`);
+    }
+    console.log("Failure\n");
+    for(let user of noValidatedNames){
+        console.log(user);
+    }
+}
+
+solution()
