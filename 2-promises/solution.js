@@ -25,7 +25,7 @@ const id = yourRandomMethod() //third run
 
 const lastnamesFile = require('./lastnames');
 const firstnamesFile = require('./firstnames');
-var completeName = [];
+let completeName = [];
 
 function solution() {
     // YOUR SOLUTION GOES HERE
@@ -49,14 +49,6 @@ function solution() {
     // If there's an error, log it
     // ***** Output is as a showOutput in the above chain
 
-    // lastnamesFile(randomId)
-    // .then(function(lastName){
-    //     showOutput(lastName);
-    //     return firstnamesFile(lastName);
-    // })
-    // .then(firstName => showOutput(firstName))
-    // .catch(error => showOutput(error));
-  
 }
 
 function generateRandomId(){
