@@ -29,7 +29,6 @@ async function solution() {
 
     // You generate your id value here
     let generatedId = generateId();
-    console.log(generatedId);
 
     // You use Promise.all here
     const allPromise = Promise.all([productsFile(generatedId), pricesFile(generatedId)]);
@@ -51,8 +50,8 @@ async function solution() {
     const settledPromise = Promise.allSettled([productsFile(generatedId), pricesFile(generatedId)]);
 
     // Log the results or errors here
-    const resultados = await settledPromise;
-    console.log(resultados);
+    const results = await settledPromise;
+    console.log(results);
 
 }
 
