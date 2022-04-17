@@ -62,7 +62,7 @@ function solution() {
 
   //here the first letter of the names is transformed to uppercase to be evaluated
   const namesArray = namesAuxArray.map(
-    (element) => element.charAt(0).toUpperCase() + element.slice(1)
+    (name) => name.charAt(0).toUpperCase() + name.slice(1)
   );
 
   const failureArray = [];

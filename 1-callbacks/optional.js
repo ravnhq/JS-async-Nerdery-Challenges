@@ -12,12 +12,12 @@ const evaluateDataTerminal = () => {
 function solution() {
   const successArray = [];
   const failureArray = [];
-  const arrayPromises = [];
+  const arrayDataUsers = [];
   const namesAuxArray = evaluateDataTerminal();
 
   //here the first letter of the names is transformed to uppercase to be evaluated
   const namesArray = namesAuxArray.map(
-    (element) => element.charAt(0).toUpperCase() + element.slice(1)
+    (name) => name.charAt(0).toUpperCase() + name.slice(1)
   );
 
   const loadData = (error, person) => {
@@ -29,10 +29,10 @@ function solution() {
   };
 
   for (let name of namesArray) {
-    arrayPromises.push(validateUser(name, loadData));
+    arrayDataUsers.push(validateUser(name, loadData));
   }
 
-  Promise.allSettled(arrayPromises)
+  Promise.allSettled(arrayDataUsers)
     .then((data) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].status === "rejected") {
