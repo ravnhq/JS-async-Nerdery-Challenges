@@ -1,3 +1,5 @@
+const validateUser = require("./validate-user");
+
 /*
 INSTRUCTIONS
 
@@ -31,16 +33,59 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 */
 
+//Complementing challenge with optional part 4
+//here you get the array of names entered by the console or not
+const evaluateDataTerminal = () => {
+  if (process.argv.length !== 2) {
+    return process.argv.slice(2);
+  } else {
+    return ["Gabo", "Martha", "John", "Mary", "Juan"];
+  }
+};
+
+//show results function
+const showResults = (successArray, failureArray) => {
+  console.log("Success");
+  for (let person of successArray) {
+    console.log(`\nid:${person.id}\nname: ${person.name}`);
+  }
+  console.log("\nFailure \n");
+  for (let failure of failureArray) {
+    console.log(failure);
+  }
+};
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE}
+  // you get your 5 names here
+  const namesAuxArray = evaluateDataTerminal();
 
-    // you get your 5 names here
+  //here the first letter of the names is transformed to uppercase to be evaluated
+  const namesArray = namesAuxArray.map(
+    (name) => name.charAt(0).toUpperCase() + name.slice(1)
+  );
 
-    // iterate the names array and validate them with the method
+  const failureArray = [];
+  const successArray = [];
+  //load Data
+  const loadData = (error, person) => {
+    if (error === null) {
+      successArray.push(person);
+    } else {
+      failureArray.push(error.message);
+    }
 
-    // log the final result
+    if (successArray.length + failureArray.length === namesArray.length) {
+      showResults(successArray, failureArray);
+    }
+  };
+
+  // iterate the names array and validate them with the method
+  for (let name of namesArray) {
+    validateUser(name, loadData);
+  }
+
+  // log the final result
 }
 
-solution()
-
-
+solution();

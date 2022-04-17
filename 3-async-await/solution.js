@@ -1,3 +1,5 @@
+const price = require("./prices");
+const products = require("./products");
 /*
 INSTRUCTIONS
 
@@ -21,16 +23,46 @@ the format is up to you
 8. as an extra challenge add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+async function solution() {
+  // YOUR SOLUTION GOES HERE
+  // You generate your id value here
+  const id = Number(Date.now().toString().slice(-2));
+  // You use Promise.all here
+  const data = Promise.all([products(id), price(id)])
+    .then(
+      (res) =>
+        `{
+    id: ${id},\n    product: ${res[0]},
+    price: ${res[1]},\n}`
+    )
+    .catch((error) => {
+      throw new Error(error.message);
+    });
 
-    // You generate your id value here
+  try {
+    const result = await data;
+    console.log(result);
+  } catch (error) {
+    console.log("Error: " + error.message);
+  }
 
-    // You use Promise.all here
+  // You use Promise.allSettled here
+  const status = await Promise.allSettled([products(id), price(id)]);
+  const [
+    { status: statusOne, value: valuePromiseOne, reason: reasonOne },
+    { status: statusTwo, value: valuePromiseTwo, reason: reasonTwo },
+  ] = status;
 
-    // You use Promise.allSettled here
+  // Log the results or errors here
 
-    // Log the results or errors here
+  console.log(`
+    Info Data Promises
+    __Products:
+    status: ${statusOne}
+    ${valuePromiseOne ? "value: " + valuePromiseOne : reasonOne}
+    __Prices:
+    status: ${statusTwo}
+    ${valuePromiseTwo ? "value: " + valuePromiseTwo : reasonTwo}`);
 }
 
-solution()
+solution();
