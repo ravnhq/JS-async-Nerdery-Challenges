@@ -5,7 +5,7 @@ const allowedUsers = ["John", "Mary", "Richard", "Stacy"];
 module.exports = (name, cb) => {
   return new Promise((resolve, reject) => {
     if (!allowedUsers.includes(name)) {
-      reject(cb(Error(`User ${name} not allowed`)));
+      reject(cb(new Error(`User ${name} not allowed`)));
     }
 
     setTimeout(() => {
