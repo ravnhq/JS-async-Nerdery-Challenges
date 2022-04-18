@@ -1,3 +1,4 @@
+// import * as validateUser from './validate-user.js'
 /*
 INSTRUCTIONS
 
@@ -31,16 +32,20 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const validate = require('./validate-user')
 
-    // you get your 5 names here
+const names = ['John', 'Mary', 'Richard', 'Stacy','Mayra']
 
-    // iterate the names array and validate them with the method
+function solution(error, cb = null) {
 
-    // log the final result
+    if (!error) {
+        console.log(`Success: ${JSON.stringify(cb)}`)      
+    } else {
+        console.log(`Failure: ${error.message}`)
+    }
 }
 
-solution()
-
+for (const name of names) {
+    validate(name,solution)
+}
 

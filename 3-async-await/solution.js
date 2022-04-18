@@ -20,17 +20,59 @@ the format is up to you
 
 8. as an extra challenge add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
+const prices = require('./prices')
+const products = require('./products')
 
+
+const idGenerator = () => {
+    const id = Date.now().toString();
+    return parseInt(id.slice(id.length - 2));
+}
+
+const promiseAll = async (id)=> {
+    try{
+    const allPromise = Promise.all([
+        products(id),
+        prices(id),       
+    ])
+    
+        const [price, product] = await allPromise;
+        console.log({id,product,price});
+    }
+    catch(e){
+        console.log(e.message);
+    }
+
+}
+
+const promiseAllSettled = async (id) => {
+
+    const [ product, price ]= await Promise.allSettled([
+
+        products(id),
+        prices(id),
+    ])
+    
+    if (product.reason) {
+        console.log( product.reason.message);
+    }
+    if (price.reason) {
+        console.log( product.reason.message);
+    }
+    
+    if (!(product.reason && price.reason)) {
+        console.log({
+            id,
+            product,
+            price,
+        })
+    }      
+}
 function solution() {
-    // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
-
-    // You use Promise.all here
-
-    // You use Promise.allSettled here
-
-    // Log the results or errors here
+    const id = idGenerator();
+    promiseAll(id);
+    promiseAllSettled(id);
 }
 
 solution()
