@@ -36,11 +36,11 @@ const promiseAll = async (id)=> {
         prices(id),       
     ])
     
-        const [price, product] = await allPromise;
+        const [product,price] = await allPromise;
         console.log({id,product,price});
     }
-    catch(e){
-        console.log(e.message);
+    catch(error){
+        console.log(error.message);
     }
 
 }
@@ -53,20 +53,24 @@ const promiseAllSettled = async (id) => {
         prices(id),
     ])
     
+  
     if (product.reason) {
-        console.log( product.reason.message);
+        console.log(`PRODUCT: ${product.reason.message}`);
+        
     }
     if (price.reason) {
-        console.log( product.reason.message);
+        console.log(`PRICE: ${price.reason.message}`);
+        
     }
-    
-    if (!(product.reason && price.reason)) {
+
+    if ((product.value && price.value)) {
+
         console.log({
             id,
-            product,
-            price,
+            product:product.value,
+            price:price.value,
         })
-    }      
+    } 
 }
 function solution() {
 
