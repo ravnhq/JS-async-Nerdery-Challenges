@@ -29,54 +29,47 @@ const idGenerator = () => {
     return parseInt(id.slice(id.length - 2));
 }
 
-const promiseAll = async (id)=> {
-    try{
-    const allPromise = Promise.all([
-        products(id),
-        prices(id),       
-    ])
-    
-        const [product,price] = await allPromise;
-        console.log({id,product,price});
+const promiseAll = async (id) => {
+    try {
+        const [product, price] = await Promise.all([
+            products(id),
+            prices(id),
+        ])
+        console.log({ id, product, price });
     }
-    catch(error){
+    catch (error) {
         console.log(error.message);
     }
-
 }
 
 const promiseAllSettled = async (id) => {
-
-    const [ product, price ]= await Promise.allSettled([
-
+    const [product, price] = await Promise.allSettled([
         products(id),
         prices(id),
     ])
-    
-  
-    if (product.reason) {
-        console.log(`PRODUCT: ${product.reason.message}`);
-        
-    }
-    if (price.reason) {
-        console.log(`PRICE: ${price.reason.message}`);
-        
-    }
-
+ 
+    if (product.reason) console.log(`PRODUCT: ${product.reason.message}`);
+    if (price.reason) console.log(`PRICE: ${price.reason.message}`);
     if ((product.value && price.value)) {
-
         console.log({
             id,
-            product:product.value,
-            price:price.value,
+            product: product.value,
+            price: price.value,
         })
-    } 
+    }
+
+
 }
+
+
 function solution() {
 
     const id = idGenerator();
+
     promiseAll(id);
+
     promiseAllSettled(id);
+
 }
 
 solution()
