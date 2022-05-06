@@ -1,3 +1,4 @@
+
 /*
 INSTRUCTIONS
 
@@ -31,14 +32,41 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 */
 
+let validateUser = require("./validate-user");
+
 function solution() {
     // YOUR SOLUTION GOES HERE
-
     // you get your 5 names here
+    const allowedUsers = ["John", "Mary", "Benjamin","Diego", "Stacy"];
+    let success = [];
+    let failed = [];
 
-    // iterate the names array and validate them with the method
+    // iterate the names array and validate them with the method;
 
-    // log the final result
+    for (let i = 0; i < allowedUsers.length; i++) {
+        validateUser(allowedUsers[i],function(err,data) {
+            
+            if(err !== null){
+                failed.push(err.message);
+            }
+
+            if( data !== undefined){
+                success.push(data)
+            }
+        });
+    }
+
+
+    // log the final result;
+    setTimeout(() => {
+        console.log("Success")
+        success.map((item) => {
+            console.log(`id:${item.id} \nname:${item.name}`)
+        })
+
+        console.log("\nFailed")
+        failed.map((item) => console.log(item))
+    },500)
 }
 
 solution()

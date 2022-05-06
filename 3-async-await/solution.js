@@ -21,16 +21,28 @@ the format is up to you
 8. as an extra challenge add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
+const prices = require("./prices");
+const products = require("./products");
+
+async function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    const num = Date.now();
+    const lastTwoDigits = String(num).slice(-2);
+    const digits = Number(lastTwoDigits);
 
     // You use Promise.all here
+
+    const result = await Promise.all([products(digits),prices(digits)]).then((response) => {
+        return `id:${digits}\nproduct:${response[0]}\nprice:${response[1]}`
+    }).catch((err) => err.message)
 
     // You use Promise.allSettled here
 
     // Log the results or errors here
+    console.log(result)
+
 }
 
 solution()
