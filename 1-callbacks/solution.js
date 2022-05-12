@@ -29,6 +29,7 @@ node solution.js name1,name2,name3, or
 node solution.js name1 name2 name3
 
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
+** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
 
 function solution() {
