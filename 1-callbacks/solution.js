@@ -32,7 +32,7 @@ node solution.js name1 name2 name3
 ** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
 function solution() {
-  // YOUR SOLUTION GOES HERE
+  // THIS FUNCTION IS NO LONGER BEING UPDATED
   const validateUser = require("./validate-user.js");
   const success = [];
   const failure = [];
