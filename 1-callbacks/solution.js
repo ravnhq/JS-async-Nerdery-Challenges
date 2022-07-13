@@ -31,17 +31,31 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 ** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
-
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
+  const validateUser = require("./validate-user.js");
+  const success = [];
+  const failure = [];
+  const users = ["José", "Mary", "Angie", "John", "Quentin"];
+  let promiseArray = users.map((ele) => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve([]), 300);
+    });
+  });
+  users.forEach((elm) => {
+    const result = new Promise();
+    validateUser(elm, (err, usr) => {
+      console.log(elm);
+      if (!err) success.push(elm);
+      else failure.push(elm);
+    });
+  });
 
-    // you get your 5 names here
+  // you get your 5 names here
 
-    // iterate the names array and validate them with the method
+  // iterate the names array and validate them with the method
 
-    // log the final result
+  // log the final result
 }
 
-solution()
-
-
+solution();
