@@ -37,19 +37,48 @@ function solution() {
   const success = [];
   const failure = [];
   const users = ["José", "Mary", "Angie", "John", "Quentin"];
-  let promiseArray = users.map((ele) => {
+  const callback = (error, data) => {
+    if (error) {
+      failure.push(error.message);
+    } else {
+      success.push(data);
+    }
+  };
+  const promArr = users.map((element) => {
     return new Promise((resolve) => {
-      setTimeout(() => resolve([]), 300);
+      validateUser(element, (error, data) => {
+        if (error) {
+          failure.push(error.message);
+          resolve(error.message);
+        } else {
+          success.push(data);
+          resolve(data);
+        }
+      });
     });
   });
-  users.forEach((elm) => {
-    const result = new Promise();
-    validateUser(elm, (err, usr) => {
-      console.log(elm);
-      if (!err) success.push(elm);
-      else failure.push(elm);
-    });
-  });
+  Promise.all(promArr)
+    .then((values) => {
+      if (success.length) {
+        console.log("\nSuccess\n");
+        for (let i = 0; i < success.length; i++) {
+          console.log(`id: ${success[i].id}`);
+          console.log(`name: ${success[i].name}\n`);
+        }
+      } else console.log("\nNo user was allowed.");
+      if (failure.length) {
+        console.log("\nFailure\n");
+        for (let i = 0; i < failure.length; i++) {
+          console.log(`${failure[i]}\n`);
+        }
+      } else console.log("\nEvery user was allowed.");
+    })
+    .then((val) => console.log(success));
+
+  // function printResolve()
+  // setTimeout(() => {
+  //   console.log(success);
+  // }, 300);
 
   // you get your 5 names here
 
