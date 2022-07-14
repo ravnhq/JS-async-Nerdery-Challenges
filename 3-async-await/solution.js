@@ -20,16 +20,39 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const getPrices = require('./prices');
+const getProducts = require('./products');
 
-    // You generate your id value here
+async function solution() {
+  // YOUR SOLUTION GOES HERE
+  const productObject = {};
+  // You generate your id value here
+  const dateID = Date.now();
+  const dateIdArray = dateID.toString().split('');
+  const id = dateIdArray
+    .slice(dateIdArray.length - 2, dateIdArray.length)
+    .join('');
+  productObject.id = id;
+  // You use Promise.all() here
+  const productPromise = new Promise((resolve) => {
+    resolve(getProducts(Number(id)));
+  });
+  const pricePromise = new Promise((resolve) => {
+    resolve(getPrices(Number(id)));
+  });
+  const allProductPromise = Promise.all([productPromise, pricePromise]);
+  // You use Promise.allSettled() here
+  const getProductPromises = await allProductPromise;
 
-    // You use Promise.all() here
-
-    // You use Promise.allSettled() here
-
-    // Log the results, or errors, here
+  getProductPromises.forEach((value) => {
+    if (typeof value != typeof 0) {
+      productObject.product = value;
+    } else {
+      productObject.price = value;
+    }
+  });
+  // Log the results, or errors, here
+  console.log(productObject);
 }
 
-solution()
+solution();
