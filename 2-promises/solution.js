@@ -24,16 +24,39 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const firstnames = require('./firstnames');
+const lastnames = require('./lastnames');
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
+  const fullName = [];
+  // You generate your id value here
+  const id = Math.floor(Math.random() * 101);
+  console.log(id);
+  //   console.log(id);
+  // You call the lastnames method with your id
+  const getLastName = new Promise((resolve) => {
+    resolve(lastnames(id));
+  });
 
-    // You generate your id value here
+  // You call the firstname method
+  getLastName
+    .then((lastname) => {
+      fullName.push(lastname);
+      return firstnames(lastname);
+    })
+    .catch((error) => console.log(error))
+    .then((name) => {
+      fullName.push(name);
+      return name;
+    })
+    .catch((error) => console.log(error))
+    .finally(console.log('completed'));
 
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  // You log the fullname, or error, here
+  setTimeout(() => {
+    if (fullName.length > 0) console.log(fullName.reverse().join(' '));
+  });
 }
 
-solution()
+solution();
