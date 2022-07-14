@@ -38,16 +38,23 @@ function solution() {
   // YOUR SOLUTION GOES HERE
   // you get your 5 names here
   const names = ['Joh', 'Mary', 'laura', 'paola', 'kenia'];
+  let sucessNames = '';
+  let failedName = '';
 
   for (ValidateName of names) {
     validateUser(ValidateName, (error, resp) => {
       if (error != null) {
-        try {
-          console.log(error);
-        } catch (e) {
-          console.log(e);
+        if (failedName == '') {
+          failedName = 'Failed';
+          console.log(failedName, '\n');
         }
+
+        console.log(error);
       } else {
+        if (sucessNames == '') {
+          sucessNames = 'Success';
+          console.log(sucessNames, '\n');
+        }
         console.log('Id: ', resp.id);
         console.log('Name:', resp.name);
       }
