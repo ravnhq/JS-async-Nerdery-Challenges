@@ -18,7 +18,8 @@ and failing promises results from lastnames method
 
 Example:
 const id = yourRandomMethod() //first run
- -- id gets a value of undefined, or you can get a null, boolean, string, whatever different to a positive integer
+ -- id gets a value of undefined, or you can get a null, boolean, string,
+ whatever different to a positive integer
 
 const id = yourRandomMethod() //second run
  -- id gets a value of 31
@@ -31,20 +32,48 @@ const id = yourRandomMethod() //third run
 */
 
 function solution() {
-  // YOUR SOLUTION GOES HERE
-  const firstName = require("./firstnames.js");
-  const lastName = require("./lastnames");
-  const promise = new Promise((resolve) => {
-    resolve(5);
+  // function imports
+  const firstNameFunction = require("./firstnames.js");
+  const lastNameFunction = require("./lastnames");
+
+  // As lastName doesn't require input, it's declared as Promise
+  const promiseLastName = new Promise((resolve) => {
+    const randValue = getRandValue();
+    // console.log(randValue); //toggle comment to test randValue
+    resolve(lastNameFunction(randValue));
   });
-  console.log(lastName());
-  // You generate your id value here
 
-  // You call the lastnames method with your id
+  // As firstName require the resolution of lastName it's declared as function with one parameter
+  const promiseFirstName = (lastName) => {
+    return new Promise((resolve) => {
+      resolve(firstNameFunction(lastName));
+    });
+  };
+  // promise call chaining and error catching
+  promiseLastName
+    .then((lastNam) =>
+      // Second .then is placed right next to first then (not after) to store the lastname
+      promiseFirstName(lastNam).then((firstN) =>
+        console.log(`${firstN} ${lastNam}`)
+      )
+    )
+    .catch((err) => console.error(err.message));
 
-  // You call the firstname method
-
-  // You log the fullname, or error, here
+  function getRandValue() {
+    //20% of times it returns a string
+    //20% of times it returns a negative number
+    //60% of times it returns an integer
+    // random number to return between 0 to 100
+    const randomForReturn = Math.floor(Math.random() * 99) + 1;
+    // generates a randomNumber between (and including) 0-5 to determine what happens next
+    const whatShouldHappenNext = Math.floor(Math.random() * 5) + 1;
+    //returns as string to test "./lastname.js" first if
+    if (whatShouldHappenNext === 1) return randomForReturn.toString();
+    //returns as negative number to test "./lastname.js" second if
+    if (whatShouldHappenNext === 2) return randomForReturn * -1;
+    //in case [3,4,5] returns integer between 0 and 100
+    return randomForReturn;
+  }
 }
 
 solution();
