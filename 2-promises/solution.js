@@ -63,7 +63,7 @@ function solution() {
     //20% of times it returns a string
     //20% of times it returns a negative number
     //60% of times it returns an integer
-    // random number to return between 0 to 100
+    // random number to return between 0 and 100
     const randomForReturn = Math.floor(Math.random() * 99) + 1;
     // generates a randomNumber between (and including) 0-5 to determine what happens next
     const whatShouldHappenNext = Math.floor(Math.random() * 5) + 1;
