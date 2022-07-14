@@ -46,17 +46,16 @@ function solution() {
   // As firstName require the resolution of lastName it's declared as function with one parameter
   const promiseFirstName = (lastName) => {
     return new Promise((resolve) => {
-      resolve(getFirstName(lastName));
+      resolve(getFirstName(lastName), 52);
     });
   };
   // promise call chaining and error catching
+  let storedLastName = "";
   promiseLastName
-    .then((lastNam) =>
-      // Second .then is placed right next to first then (not after) to store the lastname
-      promiseFirstName(lastNam).then((firstN) =>
-        console.log(`${firstN} ${lastNam}`)
-      )
-    )
+    .then((lastNam) => (storedLastName = lastNam))
+    .then((lastNam) => promiseFirstName(lastNam))
+    .then((firstN) => console.log(`${firstN} ${storedLastName}`))
+
     .catch((err) => console.error(err.message));
 
   function getRandValue() {
