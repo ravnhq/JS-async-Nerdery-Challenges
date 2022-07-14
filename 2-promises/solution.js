@@ -33,20 +33,20 @@ const id = yourRandomMethod() //third run
 
 function solution() {
   // function imports
-  const firstNameFunction = require("./firstnames.js");
-  const lastNameFunction = require("./lastnames");
+  const getFirstName = require("./firstnames.js");
+  const getLastName = require("./lastnames");
 
   // As lastName doesn't require input, it's declared as Promise
   const promiseLastName = new Promise((resolve) => {
     const randValue = getRandValue();
     // console.log(randValue); //toggle comment to test randValue
-    resolve(lastNameFunction(randValue));
+    resolve(getLastName(randValue));
   });
 
   // As firstName require the resolution of lastName it's declared as function with one parameter
   const promiseFirstName = (lastName) => {
     return new Promise((resolve) => {
-      resolve(firstNameFunction(lastName));
+      resolve(getFirstName(lastName));
     });
   };
   // promise call chaining and error catching
