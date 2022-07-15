@@ -30,6 +30,7 @@ function solution() {
     // You use Promise.allSettled() here
 
     // Log the results, or errors, here
+
 }
 
 solution()
