@@ -37,28 +37,22 @@ function solution() {
   const success = [];
   const failure = [];
   const users = ["José", "Mary", "Angie", "John", "Quentin"];
-  const callback = (error, data) => {
-    if (error) {
-      failure.push(error.message);
+  try {
+    users.forEach((user) => validateUser(user, callBackHell));
+    // validateUser("John", callBackHell);
+  } catch (error) {
+    console.error(error.message);
+  }
+  function callBackHell(cb1, cb2) {
+    if (cb1 === null) {
+      success.push(cb2);
+      // console.log(success);
     } else {
-      success.push(data);
+      failure.push(cb1.message);
+      // console.log(failure);
     }
-  };
-  const promArr = users.map((element) => {
-    return new Promise((resolve) => {
-      validateUser(element, (error, data) => {
-        if (error) {
-          failure.push(error.message);
-          resolve(error.message);
-        } else {
-          success.push(data);
-          resolve(data);
-        }
-      });
-    });
-  });
-  Promise.all(promArr)
-    .then((values) => {
+    //if done pushing call print function
+    if (success.length + failure.length === users.length) {
       if (success.length) {
         console.log("\nSuccess\n");
         for (let i = 0; i < success.length; i++) {
@@ -72,19 +66,46 @@ function solution() {
           console.log(`${failure[i]}\n`);
         }
       } else console.log("\nEvery user was allowed.");
-    })
-    .then((val) => console.log(success));
+    }
+  }
 
-  // function printResolve()
-  // setTimeout(() => {
-  //   console.log(success);
-  // }, 300);
-
-  // you get your 5 names here
-
-  // iterate the names array and validate them with the method
-
-  // log the final result
+  // const callback = (error, data) => {
+  //   if (error) {
+  //     failure.push(error.message);
+  //   } else {
+  //     success.push(data);
+  //   }
+  // };
+  // const promArr = users.map((element) => {
+  //   return new Promise((resolve) => {
+  //     validateUser(element, (error, data) => {
+  //       if (error) {
+  //         failure.push(error.message);
+  //         resolve(error.message);
+  //       } else {
+  //         success.push(data);
+  //         resolve(data);
+  //       }
+  //     });
+  //   });
+  // });
+  // Promise.all(promArr)
+  //   .then((values) => {
+  //     if (success.length) {
+  //       console.log("\nSuccess\n");
+  //       for (let i = 0; i < success.length; i++) {
+  //         console.log(`id: ${success[i].id}`);
+  //         console.log(`name: ${success[i].name}\n`);
+  //       }
+  //     } else console.log("\nNo user was allowed.");
+  //     if (failure.length) {
+  //       console.log("\nFailure\n");
+  //       for (let i = 0; i < failure.length; i++) {
+  //         console.log(`${failure[i]}\n`);
+  //       }
+  //     } else console.log("\nEvery user was allowed.");
+  //   })
+  //   .then((val) => console.log(success));
 }
 
 solution();
