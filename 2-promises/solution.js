@@ -31,12 +31,12 @@ function solution() {
   // YOUR SOLUTION GOES HERE
   const fullName = [];
   // You generate your id value here
-  const id = Math.floor(Math.random() * 101);
-  console.log(id);
+  const idFullName = Math.floor(Math.random() * 101);
+
   //   console.log(id);
   // You call the lastnames method with your id
   const getLastName = new Promise((resolve) => {
-    resolve(lastnames(id));
+    resolve(lastnames(idFullName));
   });
 
   // You call the firstname method
@@ -45,17 +45,19 @@ function solution() {
       fullName.push(lastname);
       return firstnames(lastname);
     })
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error.message))
     .then((name) => {
       fullName.push(name);
       return name;
     })
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error.message))
     .finally(console.log('completed'));
 
   // You log the fullname, or error, here
   setTimeout(() => {
-    if (fullName.length > 0) console.log(fullName.reverse().join(' '));
+    if (fullName.length > 0) {
+      console.log(fullName.reverse().join(' '));
+    }
   });
 }
 
