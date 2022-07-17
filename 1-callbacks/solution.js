@@ -33,12 +33,18 @@ node solution.js name1 name2 name3
 */
 
 
-const formatData = (data) => { return data.id === undefined ? data : `id: ${data.id}\nname:${data.name}\n` }
 
 function solution() {
+    const namesForConsole = process.argv.slice(2);
     const validateUser = require('./validate-user.js');
     // you get your 5 names here
     const usernames = ["Mary", "Julian", "Jose", "Stacy", "Gerardo"];
+    if (namesForConsole.length !== 0) {
+        for (let i = 0; i < namesForConsole.length; i++) {
+            const element = namesForConsole[i];
+            usernames.push(element)
+        }
+    }
     // iterate the names array and validate them with the method
     setTimeout(() => {
         console.log("\nsuccess")
@@ -46,6 +52,7 @@ function solution() {
     setTimeout(() => {
         console.log("failure")
     }, 301)
+
     const callbak = (error, data = "") => {
         if (data === "") {
             setTimeout(() => {
@@ -57,6 +64,8 @@ function solution() {
             //return resolve((data));
         }
     }
+
+    const formatData = (data) => { return data.id === undefined ? data : `id: ${data.id}\nname:${data.name}\n` }
 
     usernames.forEach(async (username) => {
         validateUser(username, callbak);
