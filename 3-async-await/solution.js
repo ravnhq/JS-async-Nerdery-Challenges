@@ -101,6 +101,10 @@ function solution() {
         }       
     }
 
+    promiseAll();
+    promiseAllSettled();
+    promiseAny();
+    promiseRace();
 }
 
 solution()
