@@ -86,6 +86,21 @@ function solution() {
             console.log(`\nError from Promise any: ${error.message}\n`);
         }       
     }
+
+    const promiseRace = async () => {
+        const id = 3;
+        let price;
+        let product;
+
+        try {           
+            // You use Promise.race() here
+            const response = await Promise.race([validatePrices(id), validateProduct(id)]);
+            console.log(`\nAnswer of Promise race: \n\tId: ${id} \n\tProduct: ${isNaN(Number(response)) ? response : 'not available'} \n\tPrice: ${isNaN(Number(response)) ? 'not available' : `$${response.toFixed(2)}`}\n`);
+        } catch(error) {
+            console.log(`\nError from Promise race: ${error.message}`);
+        }       
+    }
+
 }
 
 solution()
