@@ -32,10 +32,23 @@ function solution() {
     };
 
     // You use Promise.all() here
+    const promiseAll = async () => {
 
-    // You use Promise.allSettled() here
+        const id = randomNumber();
+        let price;
+        let product;
 
-    // Log the results, or errors, here
+        try {
+            // You use Promise.all() here
+            const response = await Promise.all([validatePrices(id), validateProduct(id)]);
+            price = response[0];
+            product = response[1];
+            console.log(`\nAnswer of Promise all: \n\tId: ${id} \n\tProduct: ${product} \n\tPrice: $${price.toFixed(2)}`);
+        } catch(error) {
+            console.log(`\nError from Promise all: ${error.message}\n`);
+        } 
+    }
+
 }
 
 solution()
