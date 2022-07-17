@@ -20,16 +20,43 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
+const productMethod = require('./products')
+const priceMethod = require('./prices')
+
+async function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    const id = parseInt(Date.now().toString().slice(-2))
 
+    const promise1 = new Promise((resolve) => {
+        resolve(productMethod(id))
+    })
+    const promise2 = new Promise((resolve) => {
+        resolve(priceMethod(id))
+    })
     // You use Promise.all() here
+    try {
+        const allPromises = await Promise.all([promise1, promise2]);
+        const allPromisesSettled = await Promise.allSettled([promise1, promise2]);
+        console.log({
+            id: id,
+            product: allPromises[0],
+            price: allPromises[1]
+        });
+        console.log({
+            id: id,
+            product: allPromisesSettled[0].value,
+            price: allPromisesSettled[1].value
+        });
 
+    } catch (error) {
+        console.log(error.message);
+    }
     // You use Promise.allSettled() here
-
+    //const allPromisesSettled = await Promise.allSettled([promise1, promise2]);
     // Log the results, or errors, here
+
 }
 
 solution()

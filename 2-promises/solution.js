@@ -23,17 +23,29 @@ const id = yourRandomMethod() //third run
 6. use promise chaining accordingly, don't forget error handling
 7. log the resultant fullname, or the error, at the end
 */
+const firstNameMethodImport = require("./firstnames")
+const lastNameMethodImport = require("./lastnames")
+
+const ramdonMethodId = () => Math.floor(Math.random() * 101)
 
 function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
-
+    const idValue = ramdonMethodId();
     // You call the lastnames method with your id
-
+    const lastNamePromise = new Promise((resolve) => resolve(lastNameMethodImport(idValue))).then(result => {
+        return new Promise((resolve, rejected) => {
+            resolve(firstNameMethodImport(result))
+            rejected()
+        })
+    }).then(result => console.log(result))
+    .catch((error) => console.log(error.message))
     // You call the firstname method
 
     // You log the fullname, or error, here
+    
+    //console.log(lastNamePromise)
 }
 
 solution()
