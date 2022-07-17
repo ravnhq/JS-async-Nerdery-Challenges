@@ -32,16 +32,54 @@ node solution.js name1 name2 name3
 ** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
 
+const validateUser = require('./validate-user');
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
+  // you get your 5 names here
+  const names = ['Joh', 'Mary', 'laura', 'paola', 'kenia'];
+  let sucessNames = '';
+  let failedName = '';
 
-    // you get your 5 names here
+  for (ValidateName of names) {
+    validateUser(ValidateName, (error, resp) => {
+      if (error != null) {
+        if (failedName == '') {
+          failedName = 'Failed';
+          console.log(failedName, '\n');
+        }
 
-    // iterate the names array and validate them with the method
+        console.log(error);
+      } else {
+        if (sucessNames == '') {
+          sucessNames = 'Success';
+          console.log(sucessNames, '\n');
+        }
+        console.log('Id: ', resp.id);
+        console.log('Name:', resp.name);
+      }
+    });
+  }
 
-    // log the final result
+  // iterate the names array and validate them with the method
+  // console.log('Success\n');
+  // names.map((name) => {
+  //   validateUser(name, (resp, obj) => {
+  //     try {
+  //       console.log('id:', obj?.id);
+  //       console.log('Name: ', obj?.name);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   });
+  // });
+
+  // names.map((name) => {
+  //   validateUser(name, (resp, obj) => {
+  //   });
+  // });
 }
 
-solution()
+// log the final result
 
-
+solution();

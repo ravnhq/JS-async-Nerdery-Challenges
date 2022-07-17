@@ -20,16 +20,74 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const getPrices = require('./prices');
+const getProducts = require('./products');
 
-    // You generate your id value here
+async function solution() {
+  // YOUR SOLUTION GOES HERE
+  // const productObject = {};
+  // You generate your id value here
+  const dateID = Date.now();
+  const dateIdArray = dateID.toString().split('');
+  const idProduct = dateIdArray
+    .slice(dateIdArray.length - 2, dateIdArray.length)
+    .join('');
+  //function to create a obj
+  const objectCreatorHandler = (productResponse, description) => {
+    productObject = {
+      productId: idProduct,
+      productName: '',
+      productPrice: 0,
+      productDescription: description,
+    };
+    productResponse.forEach((result) => {
+      if (typeof result != typeof 0 && typeof result.value != typeof 0) {
+        productObject.productName = result.value ? result.value : result;
+      } else {
+        productObject.productPrice = result.value ? result.value : result;
+      }
+    });
 
-    // You use Promise.all() here
+    return productObject;
+  };
+  //Creating the promises
+  const productPromise = new Promise((resolve, reject) => {
+    try {
+      resolve(getProducts(Number(idProduct)));
+    } catch (err) {
+      console.log(reject(err.message));
+    }
+  });
+  const pricePromise = new Promise((resolve, reject) => {
+    try {
+      resolve(getPrices(Number(idProduct)));
+    } catch (err) {
+      console.log(reject(err.message));
+    }
+  });
+  // You use Promise.all() here
+  const allProductPromiseall = Promise.all([productPromise, pricePromise]);
+  // You use Promise.allSettled() here
+  const allProductPromiseAllSettled = Promise.allSettled([
+    productPromise,
+    pricePromise,
+  ]);
+  const getProductResponse = await allProductPromiseall;
+  const getProductResponseAllSettled = await allProductPromiseAllSettled;
+  console.log(getProductResponseAllSettled);
 
-    // You use Promise.allSettled() here
+  const objectProductAll = objectCreatorHandler(
+    getProductResponse,
+    'Promise.All'
+  );
+  const objectProductAllSettled = objectCreatorHandler(
+    getProductResponseAllSettled,
+    'Promise.AllSettled'
+  );
 
-    // Log the results, or errors, here
+  // Log the results, or errors, here
+  console.log(objectProductAll);
+  console.log(objectProductAllSettled);
 }
 
-solution()
+solution();
