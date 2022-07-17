@@ -24,8 +24,12 @@ const validateProduct = require('./products');
 
 function solution() {
     // YOUR SOLUTION GOES HERE
-    
+
     // You generate your id value here
+    const randomNumber = () => {
+        const number = (Date.now()).toString().slice(-2);
+        return Number(number);
+    };
 
     // You use Promise.all() here
 
