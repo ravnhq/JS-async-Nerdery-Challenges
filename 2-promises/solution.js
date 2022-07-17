@@ -40,11 +40,30 @@ function solution() {
     let firstname;
     let lastname;
 
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+    randomNumber()
+    .then( id => {
+        // You call the lastnames method with your id
+        return validateLastnames(id);
+    })
+    .then ( lastnameResult => {
+        // You call the firstname method
+        lastname = lastnameResult;
+        return validateNames(lastname);
+    })
+    .then( firstnameResult => {
+        firstname = firstnameResult
+    })
+    .catch ( error => {
+        console.log(`\nError: ${error?.message}`);
+    })
+    .finally ( () => {
+        // You log the fullname, or error, here
+        console.log('');
+        console.log(lastname ? `Lastname: ${lastname}` : 'Doesn\'t have lastname');
+        console.log(firstname ? `Firstname: ${firstname}` : 'Doesn\'t have firstname');
+        console.log('');
+      }
+    )
 }
 
 solution()
