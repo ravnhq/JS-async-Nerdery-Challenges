@@ -74,7 +74,18 @@ function solution() {
             console.log(`Error from Promise allSettled: ${error.message}`);
         }       
     }
-    
+
+    const promiseAny = async () => {
+        const id = 3;
+
+        try {           
+            // You use Promise.any() here
+            const response = await Promise.any([validatePrices(id), validateProduct(id)]);
+            console.log(`\nAnswer of Promise any: \n\tId: ${id} \n\tProduct: ${isNaN(Number(response)) ? response : 'not available'} \n\tPrice: ${isNaN(Number(response)) ? 'not available' : `$${response.toFixed(2)}`}\n`);
+        } catch(error) {
+            console.log(`\nError from Promise any: ${error.message}\n`);
+        }       
+    }
 }
 
 solution()
