@@ -24,9 +24,13 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const validateNames = require('./firstnames');
+const validateLastnames = require('./lastnames');
+
+
 function solution() {
     // YOUR SOLUTION GOES HERE
-
+    
     // You generate your id value here
 
     // You call the lastnames method with your id
