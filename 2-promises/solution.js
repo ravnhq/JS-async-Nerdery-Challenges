@@ -32,6 +32,13 @@ function solution() {
     // YOUR SOLUTION GOES HERE
     
     // You generate your id value here
+    const randomNumber = () =>  new Promise ( resolve => {
+        const number = Math.floor(Math.random() * 100 * (Date.now() % 2 === 0 ? 1 : -1));
+        resolve(number);
+    })
+
+    let firstname;
+    let lastname;
 
     // You call the lastnames method with your id
 
