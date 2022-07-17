@@ -49,6 +49,32 @@ function solution() {
         } 
     }
 
+    const promiseAllSettled = async () => {
+
+        const id = randomNumber();
+        let price;
+        let product;
+
+        try {           
+            // You use Promise.allSettled() here
+            const response = await Promise.allSettled([validatePrices(id), validateProduct(id)]);
+            price = response[0]?.value;
+            product = response[1]?.value;
+            console.log(`\nAnswer of Promise allSettled: \n\tId: ${id} \n\tProduct: ${product ? product : 'not available'} \n\tPrice: ${price ? `$${price?.toFixed(2)}` : 'not available'}\n`);
+            if (!price || !product) {
+                if (response[0].status === 'rejected') {
+                    console.log(`Error getting price in Promise allSettled: ${response[0].reason.message}\n`);
+                }
+                if (response[1].status === 'rejected') {
+                    console.log(`Error getting product in Promise allSettled: ${response[1].reason.message}\n`);
+                }
+            }
+        } catch(error) {
+            // Should never show
+            console.log(`Error from Promise allSettled: ${error.message}`);
+        }       
+    }
+    
 }
 
 solution()
