@@ -19,10 +19,12 @@ Example:
 8. add any needed adjustment to solution() function
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
+const validatePrices = require('./prices');
+const validateProduct = require('./products');
 
 function solution() {
     // YOUR SOLUTION GOES HERE
-
+    
     // You generate your id value here
 
     // You use Promise.all() here
