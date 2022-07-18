@@ -23,87 +23,89 @@ const validatePrices = require('./prices');
 const validateProduct = require('./products');
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
-    const randomNumber = () => {
-        const number = (Date.now()).toString().slice(-2);
-        return Number(number);
-    };
+  // You generate your id value here
+  const randomNumber = () => {
+    const number = (Date.now()).toString().slice(-2);
+    return Number(number);
+  };
 
-    // You use Promise.all() here
-    const promiseAll = async () => {
+  // You use Promise.all() here
+  const promiseAll = async () => {
 
-        const id = randomNumber();
-        let price;
-        let product;
+    const id = randomNumber();
+    let price;
+    let product;
 
-        try {
-            // You use Promise.all() here
-            const response = await Promise.all([validatePrices(id), validateProduct(id)]);
-            price = response[0];
-            product = response[1];
-            console.log(`\nAnswer of Promise all: \n\tId: ${id} \n\tProduct: ${product} \n\tPrice: $${price.toFixed(2)}`);
-        } catch(error) {
-            console.log(`\nError from Promise all: ${error.message}\n`);
-        } 
-    }
+    try {
+      // You use Promise.all() here
+      const response = await Promise.all([validatePrices(id), validateProduct(id)]);
+      price = response[0];
+      product = response[1];
+      console.log(`\nAnswer of Promise all: \n\tId: ${id} \n\tProduct: ${product} \n\tPrice: $${price.toFixed(2)}`);
 
-    const promiseAllSettled = async () => {
+    } catch(error) {
+      console.log(`\nError from Promise all: ${error.message}\n`);
+    } 
+  }
 
-        const id = randomNumber();
-        let price;
-        let product;
+  const promiseAllSettled = async () => {
 
-        try {           
-            // You use Promise.allSettled() here
-            const response = await Promise.allSettled([validatePrices(id), validateProduct(id)]);
-            price = response[0]?.value;
-            product = response[1]?.value;
-            console.log(`\nAnswer of Promise allSettled: \n\tId: ${id} \n\tProduct: ${product ? product : 'not available'} \n\tPrice: ${price ? `$${price?.toFixed(2)}` : 'not available'}\n`);
-            if (!price || !product) {
-                if (response[0].status === 'rejected') {
-                    console.log(`Error getting price in Promise allSettled: ${response[0].reason.message}\n`);
-                }
-                if (response[1].status === 'rejected') {
-                    console.log(`Error getting product in Promise allSettled: ${response[1].reason.message}\n`);
-                }
-            }
-        } catch(error) {
-            console.log(`Error from Promise allSettled: ${error.message}`);
-        }       
-    }
+    const id = randomNumber();
+    let price;
+    let product;
 
-    const promiseAny = async () => {
-        const id = 3;
+    try {           
+      // You use Promise.allSettled() here
+      const response = await Promise.allSettled([validatePrices(id), validateProduct(id)]);
+      price = response[0]?.value;
+      product = response[1]?.value;
+      console.log(`\nAnswer of Promise allSettled: \n\tId: ${id} \n\tProduct: ${product ? product : 'not available'} \n\tPrice: ${price ? `$${price?.toFixed(2)}` : 'not available'}\n`);
 
-        try {           
-            // You use Promise.any() here
-            const response = await Promise.any([validatePrices(id), validateProduct(id)]);
-            console.log(`\nAnswer of Promise any: \n\tId: ${id} \n\tProduct: ${isNaN(Number(response)) ? response : 'not available'} \n\tPrice: ${isNaN(Number(response)) ? 'not available' : `$${response.toFixed(2)}`}\n`);
-        } catch(error) {
-            console.log(`\nError from Promise any: ${error.message}\n`);
-        }       
-    }
+        if (!price || !product) {
+          if (response[0].status === 'rejected') {
+            console.log(`Error getting price in Promise allSettled: ${response[0].reason.message}\n`);
+          }
+          if (response[1].status === 'rejected') {
+            console.log(`Error getting product in Promise allSettled: ${response[1].reason.message}\n`);
+          }
+        }
+    } catch(error) {
+      console.log(`Error from Promise allSettled: ${error.message}`);
+    }       
+  }
 
-    const promiseRace = async () => {
-        const id = 3;
-        let price;
-        let product;
+  const promiseAny = async () => {
+    const id = randomNumber();
 
-        try {           
-            // You use Promise.race() here
-            const response = await Promise.race([validatePrices(id), validateProduct(id)]);
-            console.log(`\nAnswer of Promise race: \n\tId: ${id} \n\tProduct: ${isNaN(Number(response)) ? response : 'not available'} \n\tPrice: ${isNaN(Number(response)) ? 'not available' : `$${response.toFixed(2)}`}\n`);
-        } catch(error) {
-            console.log(`\nError from Promise race: ${error.message}`);
-        }       
-    }
+    try {           
+      // You use Promise.any() here
+      const response = await Promise.any([validatePrices(id), validateProduct(id)]);
+      console.log(`\nAnswer of Promise any: \n\tId: ${id} \n\tProduct: ${isNaN(Number(response)) ? response : 'not available'} \n\tPrice: ${isNaN(Number(response)) ? 'not available' : `$${response.toFixed(2)}`}\n`);
 
-    promiseAll();
-    promiseAllSettled();
-    promiseAny();
-    promiseRace();
+    } catch(error) {
+      console.log(`\nError from Promise any: ${error.message}\n`);
+    }       
+  }
+
+  const promiseRace = async () => {
+    const id = randomNumber();
+
+    try {           
+      // You use Promise.race() here
+      const response = await Promise.race([validatePrices(id), validateProduct(id)]);
+      console.log(`\nAnswer of Promise race: \n\tId: ${id} \n\tProduct: ${isNaN(Number(response)) ? response : 'not available'} \n\tPrice: ${isNaN(Number(response)) ? 'not available' : `$${response.toFixed(2)}`}\n`);
+
+    } catch(error) {
+      console.log(`\nError from Promise race: ${error.message}`);
+    }       
+  }
+
+  promiseAll();
+  promiseAllSettled();
+  promiseAny();
+  promiseRace();
 }
 
-solution()
+solution();
