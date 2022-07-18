@@ -45,6 +45,10 @@ function solution() {
         console.log('');
       }
     }
+
+    // iterate the names array and validate them with the method
+    const callbackPromisify = promisify(callback)
+    names.forEach(name => validator(name, callback));
 }
 
 solution();
