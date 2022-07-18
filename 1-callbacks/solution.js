@@ -32,16 +32,16 @@ node solution.js name1 name2 name3
 ** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
 
+const validator = require('./validate-user');
+
 function solution() {
     // YOUR SOLUTION GOES HERE
 
     // you get your 5 names here
-
+    
     // iterate the names array and validate them with the method
 
     // log the final result
 }
 
-solution()
-
-
+solution();
