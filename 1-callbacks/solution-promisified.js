@@ -52,8 +52,12 @@ function solution() {
     users = args;
   }
   try {
-    const promise = promisify(callBackHandler);
-    users.forEach((user) => validateUser(user, promise));
+    users.forEach((user) => {
+      const promise = promisify(validateUser);
+      promise(user, callBackHandler)
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error.message));
+    });
   } catch (error) {
     console.error(error.message);
   }
