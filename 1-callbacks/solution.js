@@ -34,7 +34,7 @@ node solution.js name1 name2 name3
 
 function solution() {
   //node 1-callbacks/solution.js John Mary José Alonso Javier Richard Gustavo
-  //Next 2 lines will make the command above work as users array
+  //Next line will make the command above work as $users array
   const args = require("node:process").argv.slice(2);
 
   const validateUser = require("./validate-user.js");
