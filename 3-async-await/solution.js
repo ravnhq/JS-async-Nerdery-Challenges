@@ -70,7 +70,6 @@ function solution() {
                 }
             }
         } catch(error) {
-            // Should never show
             console.log(`Error from Promise allSettled: ${error.message}`);
         }       
     }
