@@ -29,41 +29,41 @@ const validateLastnames = require('./lastnames');
 
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
-    
-    // You generate your id value here
-    const randomNumber = () =>  new Promise ( resolve => {
-        const number = Math.floor(Math.random() * 100 * (Date.now() % 2 === 0 ? 1 : -1));
-        resolve(number);
-    })
+  // YOUR SOLUTION GOES HERE
+  
+  // You generate your id value here
+  const randomNumber = () =>  new Promise ( resolve => {
+    const number = Math.floor(Math.random() * 100 * (Date.now() % 2 === 0 ? 1 : -1));
+    resolve(number);
+  })
 
-    let firstname;
-    let lastname;
+  let firstname;
+  let lastname;
 
-    randomNumber()
-    .then( id => {
-        // You call the lastnames method with your id
-        return validateLastnames(id);
-    })
-    .then ( lastnameResult => {
-        // You call the firstname method
-        lastname = lastnameResult;
-        return validateNames(lastname);
-    })
-    .then( firstnameResult => {
-        firstname = firstnameResult
-    })
-    .catch ( error => {
-        console.log(`\nError: ${error?.message}`);
-    })
-    .finally ( () => {
-        // You log the fullname, or error, here
-        console.log('');
-        console.log(lastname ? `Lastname: ${lastname}` : 'Doesn\'t have lastname');
-        console.log(firstname ? `Firstname: ${firstname}` : 'Doesn\'t have firstname');
-        console.log('');
-      }
-    )
+  randomNumber()
+  .then( id => {
+    // You call the lastnames method with your id
+    return validateLastnames(id);
+  })
+  .then ( lastnameResult => {
+    // You call the firstname method
+    lastname = lastnameResult;
+    return validateNames(lastname);
+  })
+  .then( firstnameResult => {
+    firstname = firstnameResult;
+  })
+  .catch ( error => {
+    console.log(`\nError: ${error?.message}`);
+  })
+  .finally (() => {
+      // You log the fullname, or error, here
+      console.log('');
+      console.log(lastname ? `Lastname: ${lastname}` : 'Doesn\'t have lastname');
+      console.log(firstname ? `Firstname: ${firstname}` : 'Doesn\'t have firstname');
+      console.log('');
+    }
+  )
 }
 
-solution()
+solution();
