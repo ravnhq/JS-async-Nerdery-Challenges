@@ -82,6 +82,7 @@ function solution() {
     }
     
     // iterate the names array and validate them with the method
+    names.forEach(name => validator(name, callback));
 }
 
 solution();
