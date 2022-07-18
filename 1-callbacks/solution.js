@@ -49,10 +49,39 @@ function solution() {
     const success = [];
 
     let counter = 0;
+
+    const callback = (error, data) => {
+      if(error?.message){
+        failures.push(error.message);
+
+      } else if (data){
+        success.push(data);
+      }
+
+      counter++;
+      // log the final result
+      if(counter === names.length){
+
+        console.log(`\nArray: ${JSON.stringify(names)}\n`);
+
+        if(success.length > 0){
+          console.log("Success\n");
+          success.forEach(s => {
+            console.log(`id: ${s.id}`);
+            console.log(`name: ${s.name}\n`);
+          });
+        }
+    
+        if(failures.length > 0){
+          console.log("Failure\n");
+          failures.forEach(f => console.log(f));
+        }
+
+        console.log('');
+      }
+    }
     
     // iterate the names array and validate them with the method
-
-    // log the final result
 }
 
 solution();
