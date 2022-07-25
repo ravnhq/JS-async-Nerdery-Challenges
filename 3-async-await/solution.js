@@ -43,28 +43,31 @@ function solution() {
 
   async function resolveAndPrintAsynchronously(promise) {
     try {
-      const values = await promise;
+      const [product, price] = await promise;
+      // console.log(product);
+      // console.log(price);
+
       //Promise.all returns the same array with resolved Promises
-      if (typeof values[0] === "string") {
+      if (typeof product === "string") {
         console.log("\n**Result of Promise.all():");
         console.log("Id: " + createdId);
-        console.log("Product: " + values[0]);
-        console.log("Price: $" + values[1]);
+        console.log("Product: " + product);
+        console.log("Price: $" + price);
       }
       //Promise.allSettled returns an object with resolution of the promises
-      if (typeof values[0] === "object") {
+      if (typeof product === "object") {
         console.log("\n**Result of Promise.allSettled():");
-        if (values[0].status === "rejected") {
+        if (product.status === "rejected") {
           console.log("Unable to reach product name.");
           return;
         }
-        if (values[1].status === "rejected") {
+        if (price.status === "rejected") {
           console.log("Unable to reach price value.");
           return;
         }
         console.log("Id: " + createdId);
-        console.log("Product: " + values[0].value);
-        console.log("Price: $" + values[1].value);
+        console.log("Product: " + product.value);
+        console.log("Price: $" + price.value);
       }
     } catch (error) {
       console.error(error.message);
