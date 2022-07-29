@@ -22,14 +22,48 @@ Example:
 
 function solution() {
     // YOUR SOLUTION GOES HERE
+    const products = require('./products');
+    const prices = require('./prices');
 
     // You generate your id value here
+    const id = Number((Date.now()+'').slice(-2));
+    const result = {id};
 
-    // You use Promise.all() here
+    (async () => {
+        // You use Promise.all() here
+        console.log('Promise.all:\n')
 
-    // You use Promise.allSettled() here
+        try {
+            [result.product, result.price] = await Promise.all([products(id), prices(id)]);
+            console.log(
+                `id: ${result.id}\
+                \nproduct: ${result.product}\
+                \nprice: ${result.price}`);
+        } catch(reason) {
+            console.log(`error: ${reason.message}`);
+        }
 
-    // Log the results, or errors, here
+        // You use Promise.allSettled() here
+        console.log('\nPromise.allSettled:\n')
+
+        const settled = await Promise.allSettled([products(id), prices(id)]);
+        
+        // Log the results, or errors, here
+        
+        let allSuccess = true;
+        settled.map(result => {
+            if (result.status === 'rejected') {
+                allSuccess = false;
+                console.log(`error: ${result.reason.message}`)
+            }
+        });
+
+        if (allSuccess) console.log(
+            `id: ${id}\
+            \nproduct: ${settled[0].value}\
+            \nprice: ${settled[1].value}`
+        )
+    })();
 }
 
 solution()
