@@ -34,7 +34,7 @@ node solution.js name1 name2 name3
 
 function solution() {
     // YOUR SOLUTION GOES HERE
-    const validateUser = require('./validate-user');
+    let validateUser = require('./validate-user');
 
     // you get your 5 names here
     const names = 
@@ -42,38 +42,30 @@ function solution() {
             Array.from(process.argv.slice(2))
             : ['Christine', 'Carrie', 'Richard', 'Carol', 'Stacy'];
 
-    //iterate the names array and validate them with the method
-    //log the final result
-    console.log('Failure\n');
-    names.map(name => {
-        validateUser(name, (error, user) => {
-            error ? 
-                console.log(error.message)
-                : console.log(`\nid:${user.id}\nname: ${user.name}`);
+    
+    //////////////////// PROMISIFY FROM 'ANOTHER CALLBACK WAY' IN SOLUTION.JS
+
+    //iterate the names array and validate them with the method    
+    const success = [];
+    const failure = [];   
+    const validation = names.map(name => 
+        new Promise (resolve => {
+            validateUser(name, (error, user) => {
+                error ?
+                    resolve(failure.push(error.message))
+                    : resolve(success.push(user));
+            })
         })
-    });
-    console.log('\nSuccess');
-
-    ////////////////////// ANOTHER CALLBACK WAY
-
-    // //iterate the names array and validate them with the method
-
-    // const success = [];
-    // const failure = [];   
-    // names.map(name =>
-    //     validateUser(name, (error, user) => 
-    //         error ? failure.push(error.message) : success.push(user)
-    //     )       
-    // );
-
-    // //log the final result
-
-    // setTimeout(() => {
-    //     if (success.length) console.log('Success');
-    //     success.map(user => console.log(`\nid:${user.id}\nname: ${user.name}`));
-    //     if (failure.length) console.log('\nFailure\n');
-    //     failure.map(message => console.log(message));
-    // }, 500);
+    );
+        
+    //log the final result
+    Promise.all(validation)
+        .then( _ => {
+            if (success.length) console.log('Success');
+            success.map(user => console.log(`\nid:${user.id}\nname: ${user.name}`));
+            if (failure.length) console.log('\nFailure\n');
+            failure.map(message => console.log(message));
+        });
 }
 
 solution()
