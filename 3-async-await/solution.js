@@ -36,33 +36,47 @@ function solution() {
         try {
             [result.product, result.price] = await Promise.all([products(id), prices(id)]);
             console.log(
-                `id: ${result.id}\
-                \nproduct: ${result.product}\
-                \nprice: ${result.price}`);
+                `  id: ${result.id}\
+                \n  product: ${result.product}\
+                \n  price: ${result.price}`);
         } catch(reason) {
-            console.log(`error: ${reason.message}`);
+            console.log(`   error: ${reason.message}`);
         }
 
         // You use Promise.allSettled() here
+
         console.log('\nPromise.allSettled:\n')
 
         const settled = await Promise.allSettled([products(id), prices(id)]);
-        
-        // Log the results, or errors, here
-        
-        let allSuccess = true;
-        settled.map(result => {
-            if (result.status === 'rejected') {
-                allSuccess = false;
-                console.log(`error: ${result.reason.message}`)
-            }
-        });
 
-        if (allSuccess) console.log(
-            `id: ${id}\
-            \nproduct: ${settled[0].value}\
-            \nprice: ${settled[1].value}`
-        )
+        const print = response => 
+            response.status === 'fulfilled' ? response.value : response.reason.message;      
+
+        console.log(
+            `  id: ${id}\
+            \n  product: ${print(settled[0])}\
+            \n  price: ${print(settled[1])}\n`
+        );
+
+        //Promise.race
+
+        console.log('\nPromise.race:\n');
+        try {
+            const value = await Promise.race([products(id), prices(id)]);
+            console.log(`   Is it a product or a price?: ${value}`);
+        } catch (reason) {
+            console.log(`   error: ${reason.message}`);
+        }
+
+        //Promise.any
+
+        console.log('\nPromise.any:\n');
+        try {
+            const value = await Promise.any([products(id), prices(id)]);
+            console.log(`   Is it a product or a price?: ${value}`);
+        } catch (reason) {
+            console.log(`   error: ${reason.message}`);
+        }
     })();
 }
 
