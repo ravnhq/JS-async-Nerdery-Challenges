@@ -33,9 +33,11 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
+  const promisify = require("util").promisify;
   //node 1-callbacks/solution.js John Mary José Alonso Javier Richard Gustavo
-  //Next line will make the command above work as $users array
+  //Next 2 lines will make the command above work as users array
   const args = require("node:process").argv.slice(2);
+  // args.splice(0, 2);
 
   const validateUser = require("./validate-user.js");
   // success and failure arrays will store the result of callbacks
@@ -50,7 +52,12 @@ function solution() {
     users = args;
   }
   try {
-    users.forEach((user) => validateUser(user, callBackHandler));
+    users.forEach((user) => {
+      const promise = promisify(validateUser);
+      promise(user, callBackHandler)
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error.message));
+    });
   } catch (error) {
     console.error(error.message);
   }
