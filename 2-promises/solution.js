@@ -25,15 +25,41 @@ const id = yourRandomMethod() //third run
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
+  const firstName = require("./firstnames");
+  const lastName = require("./lastnames");
 
-    // You call the lastnames method with your id
+  // You generate your id value here
 
+  const randomNumber = (number) => Math.floor(Math.random() * number);
+
+  const randomValuesArray = [
+    undefined,
+    null,
+    true,
+    false,
+    "",
+    "string",
+    randomNumber(101) * (-1) ** randomNumber(2),
+  ];
+
+  const id = randomValuesArray[randomNumber(randomValuesArray.length)];
+
+  // You call the lastnames method with your id
+
+  const fullName = {};
+
+  lastName(id)
+    .then((lastName) => {
+      fullName.lastName = lastName;
+      return firstName(lastName);
+    })
     // You call the firstname method
-
+    .then((firstName) => (fullName.firstName = firstName))
     // You log the fullname, or error, here
+    .then((_) => console.log(`${fullName.firstName} ${fullName.lastName}`))
+    .catch((error) => console.log("Error: ", error.message));
 }
 
-solution()
+solution();
