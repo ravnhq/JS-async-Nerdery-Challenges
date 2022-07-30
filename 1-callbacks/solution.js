@@ -33,15 +33,46 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // you get your 5 names here
+  let validateUser = require("./validate-user");
 
-    // iterate the names array and validate them with the method
+  // you get your 5 names here
 
-    // log the final result
+  const names = process.argv[2]
+    ? Array.from(process.argv.slice(2))
+    : ["Jesus", "Gabriel", "Mary", "Richard", "Stacy"];
+
+  //iterate the names array and validate them with the method
+
+  const successNames = [];
+  const failureNames = [];
+
+  const validation = names.map(
+    (name) =>
+      new Promise((eval) => {
+        validateUser(name, (error, user) => {
+          error
+            ? eval(failureNames.push(error.message))
+            : eval(successNames.push(user));
+        });
+      })
+  );
+
+  //log the final result
+
+  Promise.all(validation).then((_) => {
+    if (successNames.length) {
+      console.log("\nSuccess");
+    }
+    successNames.map((user) =>
+      console.log(`\nid:${user.id}\nname: ${user.name}`)
+    );
+    if (failureNames.length) {
+      console.log("\nFailure\n");
+    }
+    failureNames.map((message) => console.log(message));
+  });
 }
 
-solution()
-
-
+solution();
