@@ -1,3 +1,5 @@
+const firstnames = require('./firstnames')
+const lastnames = require('./lastnames')
 /*
 INSTRUCTIONS
 
@@ -12,10 +14,10 @@ The point here is getting correct and incorrect values to get successful and fai
 
 Example:
 const id = yourRandomMethod() //first run
- -- id gets a value of undefined, or you can get a null, boolean, string, whatever different to a positive integer
+-- id gets a value of undefined, or you can get a null, boolean, string, whatever different to a positive integer
 
 const id = yourRandomMethod() //second run
- -- id gets a value of 31
+-- id gets a value of 31
 
 const id = yourRandomMethod() //third run
 -- id gets a value of 10
@@ -28,9 +30,32 @@ function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    const completeName = {}
+    const randomId = (num) => {
+        return Math.floor(Math.random() * num) * Math.pow(-1, Math.round(Math.random()))
+    }
 
+    const possibleIDs = [
+        false,
+        randomId(23),
+        '',
+        undefined,
+        randomId(7),
+    ]
+
+    const id = possibleIDs[randomId(Math.abs(possibleIDs.length))]
     // You call the lastnames method with your id
+    lastnames(id)
+        .then(lastName => {
+            completeName.lastName = lastName
+            return firstnames(lastName)
 
+        })
+        .then(firstName => {
+            completeName.firstName = firstName
+            console.log(`${completeName.firstName} ${completeName.lastName}`)
+        })
+        .catch(err => console.log(err.message))
     // You call the firstname method
 
     // You log the fullname, or error, here
