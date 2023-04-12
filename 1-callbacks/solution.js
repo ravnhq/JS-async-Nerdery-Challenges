@@ -33,13 +33,40 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+    const validateUser = require('./validate-user');
+    let TestUsers=[];
+    const AllowedUsers = [];
+    const NotAllowedUsers = [];
 
-    // you get your 5 names here
+    // Include process module to support arguments from the console
+    const process = require('process');
+    var args = process.argv;
+    if(args.length === 2){ //If there are no arguments coming , we setup a couple of test names
+        TestUsers=['Sam', 'Mary', 'Juan', 'Stacy','Jimmy'];
+    }
+    else{
+        args.forEach((val, index) => {
+            if(index>1)
+                TestUsers.push(val);
+        });
+    }
 
-    // iterate the names array and validate them with the method
+    const cbFn=(error,data) => {
+        if(error){
+            NotAllowedUsers.push(error.message)
+        }
+        else{
+            AllowedUsers.push(`id: ${data.id}\nname: ${data.name}`);
+        }
 
-    // log the final result
+        if(AllowedUsers.length+NotAllowedUsers.length === TestUsers.length){ //Once all names have been processed we print the result
+            console.log('Success\n\n',AllowedUsers.join('\n\n'));
+            console.log('\nFailure\n\n',NotAllowedUsers.join('\n'));
+        }
+      };
+    TestUsers.forEach(function(user){
+        validateUser(user,cbFn)
+    })
 }
 
 solution()
