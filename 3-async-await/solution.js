@@ -20,16 +20,85 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const { CLIENT_RENEG_LIMIT } = require('tls');
 
-    // You generate your id value here
+async function solution() {
+    const getProducts = require('./products');
+    const getPrices = require('./prices');
+    //Function to generate a random ID
+    const getId = () =>{
+        return Date.now().toString().slice(-2);
+    }
+    const id = getId();
 
-    // You use Promise.all() here
+    console.log(`Testing for ID: ${id}`);
+    const handlePromiseAll = (res) =>{
+        console.log('Processing Promise ALL');
+        if(typeof res[0] ==='string' ){
+            console.log({id:id,product: res[0],price:res[1]})
+        }
+        else{
+            console.log({id:id,product: res[1],price:res[0]})
+        }
+    }
 
-    // You use Promise.allSettled() here
+    const handleAllSettled = (res) =>{
+        console.log('\nProcessing ALL settled');
+        if(res[0].status && res[1].status === 'fulfilled'){
+            if(typeof res[0].value ==='string' ){
+                console.log({id:id,product: res[0].value,price:res[1].value})
+            }
+            else{
+                console.log({id:id,product: res[1].value,price:res[0].value})
+            }
+        }   
+        else{
+            console.log('An error has ocurred when fetching the products or prices');
+        }
+    }
 
-    // Log the results, or errors, here
+    try{
+            //Creation of new promises for Products and Prices
+        const products = new Promise((resolve) => {
+            resolve(getProducts(Number(id)));
+        });
+        const prices = new Promise((resolve) => {
+            resolve(getPrices(Number(id)));
+        });
+
+        //Preparing the arry of promises
+        const productsAndPrices=[products,prices];
+
+        //executing all promises at once with Promise.all and Promise.allSettled
+        const results =await Promise.all(productsAndPrices);
+        handlePromiseAll(results); 
+
+        const settled=await Promise.allSettled(productsAndPrices);
+        handleAllSettled(settled); 
+
+        //Extra promise race and any
+        console.log('\nResults for Promise Race')
+        Promise.race(productsAndPrices).then((value) => {
+            if(typeof value ==='string' )
+                console.log(`Products (${value}) settled first!`)
+            else 
+                console.log(`Price (${value}) settled first!`)
+        });
+
+        Promise.any(productsAndPrices).then((value) => {
+            if(typeof value ==='string' )
+                console.log(`Products (${value}) fulfilled first!`)
+            else 
+                console.log(`Price (${value}) fulfilled first!`)
+        });
+    }
+    catch(error){
+        console.log('An error has ocurred while fetching the products or prices');
+    }
+
+    //Promise Race 
+
+
 }
 
 solution()
