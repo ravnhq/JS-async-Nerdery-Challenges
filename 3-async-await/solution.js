@@ -20,16 +20,76 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const products = require('./products');
+const prices = require('./prices');
 
-    // You generate your id value here
+async function solution() {
+  // YOUR SOLUTION GOES HERE
 
-    // You use Promise.all() here
+  const generateId = () => {
+    return Date.now() % 100;
+  };
 
-    // You use Promise.allSettled() here
+  let id = generateId();
+  let promises = [products(id), prices(id)];
+  let result;
 
-    // Log the results, or errors, here
+  // Promise.allSettled
+  try {
+    let promiseAllSettledResults = await Promise.allSettled(promises);
+
+    promiseAllSettledResults.forEach((result) => {
+      if (result.status === 'rejected') {
+        throw Error(result.reason.message);
+      }
+    });
+    result = {
+      id: id,
+      product: promiseAllSettledResults[0].value,
+      price: promiseAllSettledResults[1].value,
+    };
+    console.log('Promise.allSettled Results: ', result);
+  } catch (err) {
+    console.log('Promise.allSettled Error: ', err.message);
+  }
+
+  // Promise.all
+
+  try {
+    let promiseAllResults = await Promise.all(promises);
+    result = {
+      id: id,
+      product: promiseAllResults[0],
+      price: promiseAllResults[1],
+    };
+    console.log('Promise.all Results:', result);
+  } catch (err) {
+    console.log("Promise.all Error: ", err.message);
+  }
+
+  // Promise.race (It only returns the first promise that resolves or rejects)
+  try {
+    let promiseRaceResults = await Promise.race(promises);
+    result = {
+      id: id,
+      firstResult: promiseRaceResults,
+    };
+    console.log('Promise.race Results:', result);
+  } catch (err) {
+    console.log("Promise.race Error: ", err.message);
+  }
+
+  // Promise.any (It only returns the first promise that resolves)
+  try {
+    let promiseAnyResults = await Promise.race(promises);
+    result = {
+      id: id,
+      firstResult: promiseAnyResults,
+    };
+    console.log('Promise.any Results:', result);
+  } catch (err) {
+    console.log("Promise.any Error: ", err.message);
+  }
 }
 
-solution()
+solution();
