@@ -1,3 +1,4 @@
+const { error } = require("node:console");
 const validate = require("./validate-user");
 const { argv } = require("node:process");
 const util = require("util");
@@ -43,7 +44,6 @@ function solution() {
   const users = ["John", "Mary", "Richard", "Stacy", "Eduardo"];
 
   // iterate the names array and validate them with the method
-
   function callBack(error, data) {
     if (error) {
       if (failureClosure) {
@@ -62,11 +62,34 @@ function solution() {
     return;
   }
 
-  //users.forEach((nombre) => validate(nombre, callBack));
-
+  ////array
+  users.forEach((user) => validate(user, callBack));
+  ////node argv
   for (let index = 2; index < argv.length; index++) {
     validate(argv[index], callBack);
   }
+  ////util promsifyed
+  const promisifyedValidate = util.promisify(validate);
+  users.forEach((nombre) =>
+    promisifyedValidate(nombre)
+      .then((data) => {
+        if (successClosure) {
+          successClosure = false;
+          console.log("\nSuccess");
+        }
+        console.log(`id: ${data.id}`);
+        console.log(`name: ${data.name}\n`);
+        return;
+      })
+      .catch((error) => {
+        if (failureClosure) {
+          failureClosure = false;
+          console.log("Failure\n");
+        }
+        console.log(error.message);
+        return;
+      })
+  );
 
   // log the final result
 }
