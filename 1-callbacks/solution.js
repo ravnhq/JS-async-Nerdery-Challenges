@@ -1,3 +1,6 @@
+const validate = require("./validate-user");
+const { argv } = require("node:process");
+const util = require("util");
 /*
 INSTRUCTIONS
 
@@ -33,15 +36,39 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
+  let successClosure = true;
+  let failureClosure = true;
+  // you get your 5 names here
+  const users = ["John", "Mary", "Richard", "Stacy", "Eduardo"];
 
-    // you get your 5 names here
+  // iterate the names array and validate them with the method
 
-    // iterate the names array and validate them with the method
+  function callBack(error, data) {
+    if (error) {
+      if (failureClosure) {
+        failureClosure = false;
+        console.log("Failure\n");
+      }
+      console.log(error.message);
+      return;
+    }
+    if (successClosure) {
+      successClosure = false;
+      console.log("\nSuccess");
+    }
+    console.log(`id: ${data.id}`);
+    console.log(`name: ${data.name}\n`);
+    return;
+  }
 
-    // log the final result
+  //users.forEach((nombre) => validate(nombre, callBack));
+
+  for (let index = 2; index < argv.length; index++) {
+    validate(argv[index], callBack);
+  }
+
+  // log the final result
 }
 
-solution()
-
-
+solution();
