@@ -35,8 +35,11 @@ node solution.js name1 name2 name3
 const { argv } = require('process');
 const validateUser = require('./validate-user');
 
+const util = require('util');
 
-const usersArray = argv.slice(2)
+const usersArray = argv.slice(2);
+
+const promisifiedValidateUser = util.promisify(validateUser);
 
 function solution() {
   function getUsers(usersArray) {
@@ -44,20 +47,19 @@ function solution() {
 
     console.log('Failures\n');
     usersArray.forEach((user) => {
-      validateUser(user, (err, data) => {
-        if (err) {
-          console.log(err.message);
-        } else {
+      promisifiedValidateUser(user)
+        .then((data) => {
           if (successFlag) {
             console.log('\nSuccess\n');
             successFlag = false;
           }
           console.log(`id: ${data.id}\nname: ${data.name}\n`);
-        }
-      });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     });
   }
-
   getUsers(usersArray);
 }
 
