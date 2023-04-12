@@ -1,3 +1,5 @@
+const prices = require("./prices");
+const products = require("./products");
 /*
 INSTRUCTIONS
 
@@ -21,15 +23,56 @@ Example:
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
-
-    // You use Promise.all() here
-
-    // You use Promise.allSettled() here
-
-    // Log the results, or errors, here
+  // You generate your id value here
+  let id = Date.now().toString().slice(-2);
+  // You use Promise.all() here
+  const promiseAll = async () => {
+    try {
+      const result = await Promise.all([products(id), prices(id)]);
+      let resultObject = { id: id, product: result[0], price: result[1] };
+      console.log(resultObject);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  //promiseAll();
+  // You use Promise.allSettled() here
+  const promiseAllSettled = async () => {
+    const result = await Promise.allSettled([products(id), prices(id)]);
+    if (result[0].status === "fulfilled" && result[1].status === "fulfilled") {
+      let resultObject = { id: id, product: result[0], price: result[1] };
+      console.log(resultObject);
+      return;
+    }
+    result.forEach((promise) => {
+      if (promise.status === "rejected") {
+        console.log(promise.reason);
+        return;
+      }
+    });
+  };
+  //promiseAllSettled();
+  const promiseRace = async () => {
+    try {
+      let result = await Promise.race([products(id), prices(id)]);
+      console.log(result);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  //promiseAny();
+  const promiseAny = async () => {
+    try {
+      let result = await Promise.any([products(id), prices(id)]);
+      console.log(result);
+    } catch (error) {
+      console.log("None of the promises were resolved", error.message);
+    }
+  };
+  promiseAny();
+  // Log the results, or errors, here
 }
 
-solution()
+solution();
