@@ -1,3 +1,5 @@
+const lastname = require("./lastnames");
+const firstname = require("./firstnames");
 /*
 INSTRUCTIONS
 
@@ -25,15 +27,33 @@ const id = yourRandomMethod() //third run
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
-
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  // You generate your id value here
+  const randomMethod = () => {
+    let flip = Math.random();
+    if (flip > 0.5) {
+      let random = Number(Math.round(Math.random() * 100));
+      return random;
+    }
+    return null;
+  };
+  let id = randomMethod();
+  console.log(id);
+  let name = "";
+  // You call the lastnames method with your id
+  lastname(id)
+    .then((data) => {
+      name = name.concat(data, " ");
+      // You call the firstname method
+      return firstname(data);
+    })
+    .then((data) => {
+      name = name.concat(data);
+      // You log the fullname, or error, here
+      console.log(name);
+    })
+    .catch((error) => console.log(error.message));
 }
 
-solution()
+solution();
