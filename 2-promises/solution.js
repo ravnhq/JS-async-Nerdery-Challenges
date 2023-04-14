@@ -28,7 +28,7 @@ const firstnames = require("./firstnames");
 const lastnames = require("./lastnames");
 
 function solution() {
-    const id = Math.floor(Math.random() * 101);
+    const id = Math.round(Math.random()) * 2 - 1
 
     const fullname = {}
 
@@ -43,7 +43,7 @@ function solution() {
         console.log(`${fullname.firstName} ${fullname.lastName}`);
     })
     .catch(error => {
-        console.log('Error', error);
+        console.log('Error', error.message);
     })
 }
 
