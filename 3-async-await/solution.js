@@ -19,17 +19,50 @@ Example:
 8. add any needed adjustment to solution() function
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
-
-function solution() {
-    // YOUR SOLUTION GOES HERE
-
+const getPrices = require('./prices');
+const getProduct = require('./products');
+async function solution() {
+  try {
     // You generate your id value here
-
+    const id = generateId();
     // You use Promise.all() here
-
-    // You use Promise.allSettled() here
-
-    // Log the results, or errors, here
+    const [price, name] = await Promise.all([getPrices(id), getProduct(id)]);
+    const product = { id, product: name, price };
+    console.log(`\nResolving with Promise.all:\n`, product);
+  } catch (error) {
+    // Log the results, or errors, heres
+    console.log(`\nError in Promise.all: ${error.message}`);
+  }
+}
+async function solutionAllSettled() {
+  const id = generateId();
+  let product = { id };
+  const [priceResponse, productResponse] = await Promise.allSettled([
+    getPrices(id),
+    getProduct(id),
+  ]);
+  // Check if there is any error in the promises
+  if (
+    priceResponse.status === 'rejected' ||
+    productResponse.status === 'rejected'
+  ) {
+    // Print the error message
+    console.log(
+      `\nError in Promise.allSettled: `,
+      priceResponse.reason?.message || productResponse.reason?.message
+    );
+    return;
+  }
+  // If all promise are resolved assign values
+  product.product = productResponse.value;
+  product.price = priceResponse.value;
+  //Print result
+  console.log('\nResolve in Promise.allSettled\n', product);
+}
+// Helper function to generate an ID
+function generateId() {
+  return parseInt(Date.now().toString().slice(-2));
 }
 
-solution()
+solution();
+solutionAllSettled();
