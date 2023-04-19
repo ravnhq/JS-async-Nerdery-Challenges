@@ -25,15 +25,34 @@ const id = yourRandomMethod() //third run
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
+  // You generate your id value here
+  const randomId = () => {
+    const random = Math.floor(Math.random() * 3);
+    if (random == 1) {
+      return Math.floor(Math.random() * 100);
+    } else if (random == 2) {
+      return -random;
+    }
+    return true;
+  };
 
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  // You call the lastnames method with your id
+  const getLastnameWithId = require("./lastnames");
+  getLastnameWithId(randomId())
+    .then((lastname) => {
+      // You call the firstname method
+      const getFirstnameWithLastname = require("./firstnames");
+      return Promise.all([getFirstnameWithLastname(lastname), lastname]);
+    })
+    .then(([firstname, lastname]) => {
+      // You log the fullname, or error, here
+      console.log(`The fullname is ${firstname} ${lastname}`);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 }
 
-solution()
+solution();
