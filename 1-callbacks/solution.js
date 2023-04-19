@@ -33,15 +33,41 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // you get your 5 names here
+  // you get your 5 names here
 
-    // iterate the names array and validate them with the method
+  // Using an array:
+  // const users = ["Mary", "Daniel", "Stacy", "Gerardo", "Diego"];
+  
+  // Using process.argv property:
+  const { argv } = require('process');
+  const users = argv.filter((item, index) => index > 1);
 
-    // log the final result
+  // iterate the names array and validate them with the method
+  const validateUser = require("./validate-user");
+  const successList = [],
+  failureList = [];
+  for (const user of users) {
+    validateUser(user, (error, response) => {
+      if (error) {
+        failureList.push(error.message);
+      } else {
+        successList.push(response);
+      }
+      // log the final result
+      if (failureList.length + successList.length === users.length) {
+        console.log("Success\n");
+        for (const user of successList) {
+          console.log(`id: ${user.id} \nname: ${user.name}\n`);
+        }
+        console.log("Failure\n");
+        for (const message of failureList) {
+          console.log(message);
+        }
+      }
+    });
+  }
 }
 
-solution()
-
-
+solution();
