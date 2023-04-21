@@ -28,23 +28,23 @@ const firstnames = require("./firstnames");
 const lastnames = require("./lastnames");
 
 function solution() {
-    const id = Math.round(Math.random()) * 2 - 1
+    const id = Math.round(Math.random() * 5 + Math.random() * -2);
 
-    const fullname = {}
+    const fullname = {};
 
     lastnames(id)
-    .then(lastName => {
-        fullname.lastName = lastName
+        .then((lastName) => {
+            fullname.lastName = lastName;
 
-        return firstnames(lastName)
-    })
-    .then(firstName => {
-        fullname.firstName = firstName
-        console.log(`${fullname.firstName} ${fullname.lastName}`);
-    })
-    .catch(error => {
-        console.log('Error', error.message);
-    })
+            return firstnames(lastName);
+        })
+        .then((firstName) => {
+            fullname.firstName = firstName;
+            console.log(`${fullname.firstName} ${fullname.lastName}`);
+        })
+        .catch((error) => {
+            console.log("Error", error.message);
+        });
 }
 
-solution()
+solution();

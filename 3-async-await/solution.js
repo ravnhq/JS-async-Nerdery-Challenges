@@ -20,59 +20,52 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-const { log } = require("console");
 const prices = require("./prices");
 const products = require("./products");
 
-function solution() {
+async function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
     const id = parseInt(Date.now().toString().slice(-2));
 
     // You use Promise.all() here
-    const getProducts = async () => {
-        try {
-            const [product, price] = await Promise.all([
-                products(id),
-                prices(id),
-            ]);
 
-            console.log({ id: id, product: product, price: price });
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
+    try {
+        const [product, price] = await Promise.all([products(id), prices(id)]);
+
+        console.log({ id: id, product: product, price: price });
+    } catch (error) {
+        console.log(error.message);
+    }
 
     // You use Promise.allSettled() here
 
-    const getProducts2 = async () => {
-        const results = await Promise.allSettled([
-            products(id), // {status, value}
-            prices(id), // {status, value}
-        ]);
+    const results = await Promise.allSettled([
+        products(id), // {status, value}
+        prices(id), // {status, value}
+    ]);
 
-        const product = {
-            id,
-            product: '',
-            price: 0,
-        }
-
-        results.forEach((result) => {
-            if (result.status === "fulfilled") {
-                (typeof result.value) === 'string' ? product.product = result.value : product.price = result.value
-            } else {
-                console.error(result.error);
-            }
-        });
-
-        console.log(product);
+    const product = {
+        id,
+        product: "",
+        price: 0,
     };
 
-    // Log the results, or errors, here
+    results.forEach((result) => {
+        if (result.status === "fulfilled") {
+            typeof result.value === "string"
+                ? (product.product = result.value)
+                : (product.price = result.value);
+        } else {
+            console.error(result.error);
+        }
+    });
 
-    getProducts2()
-    getProducts();
+    // Log the results, or errors, here
+    console.log(product);
+
+    //getProducts()
 }
 
 solution();

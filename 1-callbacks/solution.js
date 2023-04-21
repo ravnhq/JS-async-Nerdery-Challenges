@@ -42,22 +42,26 @@ function solution() {
     let successLog = "";
     let processed = 0;
 
-    const cb = (error, user) => {
+    const processNames = (error, user) => {
         if (error) {
             errorLog += error.message + "\n";
         } else {
-            successLog += `id:${user.id}\nname:${user.name}\n\n`;
+            successLog += `id:${user.id}\nname: ${user.name}\n\n`;
         }
         processed++;
 
         if (processed === names.length) {
-            console.log("Success\n\n", successLog);
-            console.log("Failure\n\n", errorLog);
+            console.log("\nSuccess\n\n");
+            console.log(successLog);
+            console.log("Failure\n");
+            console.log(errorLog);
         }
     };
 
     // iterate the names array and validate them with the method
-    names.forEach((current) => {validateUser(current, cb);});
+    names.forEach((name) => {
+        validateUser(name, processNames);
+    });
 }
 
 solution();
