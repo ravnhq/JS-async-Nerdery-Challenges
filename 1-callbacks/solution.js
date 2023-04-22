@@ -34,8 +34,10 @@ node solution.js name1 name2 name3
 const validateName = require('./validate-user');
 
 function solution() {
+    // Array of names with 2 matches
     const names = ['Quebec', 'Rasmus', 'Mary', 'Zeada', 'Richard'];
 
+    // iterate the names array and validate them with the method
     console.log('Success');
     for (const name of names) {
         validateName(name, callback);
@@ -45,6 +47,7 @@ function solution() {
         console.log('Failure\n');
     }, 350);
 
+    // log the final result
     function callback(...params) {
         if (params.length > 1) 
             console.log(`\nid: ${params[1].id}\nname: ${params[1].name}\n`);
