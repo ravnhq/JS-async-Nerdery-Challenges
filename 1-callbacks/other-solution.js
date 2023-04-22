@@ -37,26 +37,27 @@ const process = require('node:process');
 const util = require('node:util');
 const validateName = require('./validate-user');
 
+/* 
+ NOTE: I've tried a lot of ways to make use of the promise properly since the provided 
+ function is tricky, I made use of the error handler to print it as desired because that Error object has to be used...
+ I didn't commit all the tries because that would be junk so I stayed with this one, looks good so far.
+*/
+
 function solution() {
+    // get parameters from console
     const names = process.argv.filter((item, index) => index > 1);
+    // using promisify
     const validateAsync = util.promisify(validateName);
 
+    // Logging the results
     console.log('Success');
-    Promise.all(names.map(name => validateAsync(name, callback)));
-    
-    setTimeout(() => {
-        console.log('Failure\n');
-    }, 350);
-
-    function callback(...params) {
-        if (params.length > 1)  
-            console.log(`\nid: ${params[1].id}\nname: ${params[1].name}\n`);
-        else {
-            setTimeout(() => {
-                console.log(params[0].message);
-            }, 400);
-        }
+    for (const name of names) {
+        validateAsync(name, (...params) => {
+            if (params.length > 1) console.log(`\nid: ${params[1].id}\nname: ${params[1].name}\n`)
+            else throw new Error(params[0].message);
+        }).catch(error => setTimeout(() => console.error(error.message), 350));
     }
+    setTimeout(() => console.log('Failure\n'), 350);
 }
 
 solution()
