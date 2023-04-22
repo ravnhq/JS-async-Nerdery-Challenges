@@ -30,18 +30,28 @@ const lastnames = require('./lastnames');
 
 function solution() {
     const id = randomId();
-    process.stdout.write(`ID: ${id} - `);
+
+    console.log(`ID: ${id}`);
+    // Lastname callback
     lastnames(id).then(lname => {
+        // For the sake of printing it same as the example I used stdout.write
         process.stdout.write(`${lname}, `);
+
+        // Firstname callback
         firstnames(lname).then(fname => {
             process.stdout.write(`${fname}\n`);
-        }).catch(error => console.log(error.message))
+        }).catch(error => console.log(error.message));
+
     }).catch(error => console.log(error.message));
     
+    // NOTE: The randomId() function tends to be very.. unlucky. Please spam it until you see all the cases.
+    // randomizing logic that provides an id for lastnames method
     function randomId() { 
         const desire = [1, -1];
         const choice = Math.floor(Math.random() * desire.length);
-        return (Math.floor(Math.random() * 2)) ? Math.floor(Math.random() * 101) * desire[choice] : Math.floor(Math.random() * 101) * desire[choice] + desire.toString();
+        return (Math.floor(Math.random() * 2)) ? 
+            Math.floor(Math.random() * 101) * desire[choice] : 
+            Math.floor(Math.random() * 101) * desire[choice] + desire.toString(); // whatever different to a positive integer
     }
 }
 
