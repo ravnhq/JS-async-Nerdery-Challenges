@@ -26,6 +26,7 @@ async function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    // NOTE : from what I tested, if you want to display the case where all 4 cases fail please assign 48 to id.
     const id = randomId();
     console.log(`The ID generated for this run is ${id}\n`);
     
@@ -39,9 +40,6 @@ async function solution() {
             products(id),
         ]);
         
-        if (!allPromises) throw Error({ cause: allPromises });
-        
-        // Log the results, or errors, here
         console.log({ id, product: allPromises[1], price: allPromises[0] });
 
     } catch (error) {
@@ -62,14 +60,20 @@ async function solution() {
         const promisesFulfilled = promisesSettled.filter(promise => promise.status === 'fulfilled').map(result => result.value);
         const promisesRejected = promisesSettled.filter(promise => promise.status === 'rejected').map(result => result.reason.message);
         
-        if (promisesRejected.length > 0) throw new Error(promisesRejected);
+        if (promisesRejected.length) throw new Error(promisesRejected);
 
         // Log the results, or errors, here
         console.log({ id, product: promisesFulfilled[1], price: promisesFulfilled[0] });
 
     } catch (error) {
+        /* NOTE : I've been trying to do proper error handling with all the promises but I had one struggle
+        // error.message allways gets a string "${error.name}: ${error.message},${error.name}: ${error.message}"
+        // and I haven't found a proper way to recieve the Error object itself, catch always parses it into a single string.
+        // so this is my best try to get all the errors printed in a good format.
+        */
         console.log('Entered Promise.allSettled catch block');
-        console.error(error.message);
+        const msg = [error.message].join(' ').split(',');
+        msg.forEach(err => console.error(err));
     }
 
 
@@ -83,18 +87,16 @@ async function solution() {
             products(id),
         ]);
         
-        if (!anyPromise) throw new Error({ cause: anyPromise });
+        if (anyPromise.status === 'rejected') throw new Error(anyPromise);
 
         // Log the results, or errors, here
         if (typeof anyPromise === 'string')
             console.log({ id, product: anyPromise, price: 'Not determined by any' });
         else if (typeof anyPromise === 'number')
             console.log({ id, product: 'Not determined by any', price: anyPromise });
-        else 
-            console.log({ id, anyPromise });
 
     } catch (error) {
-        console.log('Entered Promise.race catch block');
+        console.log('Entered Promise.any catch block');
         console.error(error.message);
     }
     
@@ -108,17 +110,12 @@ async function solution() {
             prices(id),
             products(id),
         ]);
-        
-        
-        if (!promiseRace) throw new Error({ cause: promiseRace });
   
         // Log the results, or errors, here
         if (typeof promiseRace === 'string')
             console.log({ id, product: promiseRace, price: 'Not determined by race' });
         else if (typeof promiseRace === 'number')
             console.log({ id, product: 'Not determined by race', price: promiseRace });
-        else 
-            console.log({ id, promiseRace })
 
     } catch (error) {
         console.log('Entered Promise.race catch block');
