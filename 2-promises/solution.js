@@ -24,16 +24,35 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const process = require('node:process')
+const firstnames = require('./firstnames');
+const lastnames = require('./lastnames');
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+    const id = randomId();
 
-    // You generate your id value here
+    console.log(`ID: ${id}`);
+    // Lastname callback
+    lastnames(id).then(lname => {
+        // For the sake of printing it same as the example I used stdout.write
+        process.stdout.write(`${lname}, `);
 
-    // You call the lastnames method with your id
+        // Firstname callback
+        firstnames(lname).then(fname => {
+            process.stdout.write(`${fname}\n`);
+        }).catch(error => console.log(error.message));
 
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+    }).catch(error => console.log(error.message));
+    
+    // NOTE: The randomId() function tends to be very.. unlucky. Please spam it until you see all the cases.
+    // randomizing logic that provides an id for lastnames method
+    function randomId() { 
+        const desire = [1, -1];
+        const choice = Math.floor(Math.random() * desire.length);
+        return (Math.floor(Math.random() * 2)) ? 
+            Math.floor(Math.random() * 101) * desire[choice] : 
+            Math.floor(Math.random() * 101) * desire[choice] + desire.toString(); // whatever different to a positive integer
+    }
 }
 
 solution()

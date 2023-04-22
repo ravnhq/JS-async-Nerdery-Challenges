@@ -31,34 +31,33 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 ** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
+
+/* with steps 4 and 5 */
+const process = require('node:process');
+const util = require('node:util');
 const validateName = require('./validate-user');
 
-function solution() {
-    // Array of names with 2 matches
-    const names = ['Quebec', 'Rasmus', 'Mary', 'Zeada', 'Richard'];
+/* 
+ NOTE: I've tried a lot of ways to make use of the promise properly since the provided 
+ function is tricky, I made use of the error handler to print it as desired because that Error object has to be used...
+ I didn't commit all the tries because that would be junk so I stayed with this one, looks good so far.
+*/
 
-    // iterate the names array and validate them with the method
+function solution() {
+    // get parameters from console
+    const names = process.argv.filter((item, index) => index > 1);
+    // using promisify
+    const validateAsync = util.promisify(validateName);
+
+    // Logging the results
     console.log('Success');
     for (const name of names) {
-        validateName(name, callback);
+        validateAsync(name, (...params) => {
+            if (params.length > 1) console.log(`\nid: ${params[1].id}\nname: ${params[1].name}\n`)
+            else throw new Error(params[0].message);
+        }).catch(error => setTimeout(() => console.error(error.message), 350));
     }
-
-    setTimeout(() => {
-        console.log('Failure\n');
-    }, 350);
-
-    // log the final result
-    function callback(...params) {
-        if (params.length > 1) 
-            console.log(`\nid: ${params[1].id}\nname: ${params[1].name}\n`);
-        else {
-            setTimeout(() => {
-                console.log(params[0].message);
-            }, 400);
-        }
-    }
+    setTimeout(() => console.log('Failure\n'), 350);
 }
 
 solution()
-
-
