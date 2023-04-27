@@ -34,7 +34,13 @@ async function solution() {
     try {
         const [product, price] = await Promise.all([products(id), prices(id)]);
 
-        console.log({ id: id, product: product, price: price });
+        const result = {
+            id: id,
+            product: product,
+            price: price,
+        };
+
+        console.log(result);
     } catch (error) {
         console.log(error.message);
     }
