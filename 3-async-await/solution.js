@@ -20,16 +20,48 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
+const prices = require("./prices");
+const products = require("./products");
+
+async function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    const id = parseInt(Date.now().toString().slice(-2));
 
     // You use Promise.all() here
 
+    try {
+        const [product, price] = await Promise.all([products(id), prices(id)]);
+
+        console.log({ id, product, price });
+    } catch (error) {
+        console.log(error.message);
+    }
+
     // You use Promise.allSettled() here
 
+    const results = await Promise.allSettled([
+        products(id), // {status, value}
+        prices(id), // {status, value}
+    ]);
+
+    const product = {
+        id,
+        product: "",
+        price: 0,
+    };
+
+    results.forEach((result) => {
+        result.status === "fulfilled" &&
+            (typeof result.value === "string"
+                ? (product.product = result.value)
+                : (product.price = result.value)),
+            result.status === "rejected" && console.error(result.error);
+    });
+
     // Log the results, or errors, here
+    console.log(product);
 }
 
-solution()
+solution();

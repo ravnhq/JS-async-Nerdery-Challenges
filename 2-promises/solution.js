@@ -12,10 +12,10 @@ The point here is getting correct and incorrect values to get successful and fai
 
 Example:
 const id = yourRandomMethod() //first run
- -- id gets a value of undefined, or you can get a null, boolean, string, whatever different to a positive integer
+    -- id gets a value of undefined, or you can get a null, boolean, string, whatever different to a positive integer
 
 const id = yourRandomMethod() //second run
- -- id gets a value of 31
+    -- id gets a value of 31
 
 const id = yourRandomMethod() //third run
 -- id gets a value of 10
@@ -24,16 +24,27 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const firstnames = require("./firstnames");
+const lastnames = require("./lastnames");
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+    const id = Math.round(Math.random() * 5 + Math.random() * -2);
 
-    // You generate your id value here
+    const fullname = {};
 
-    // You call the lastnames method with your id
+    lastnames(id)
+        .then((lastName) => {
+            fullname.lastName = lastName;
 
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+            return firstnames(lastName);
+        })
+        .then((firstName) => {
+            fullname.firstName = firstName;
+            console.log(`${fullname.firstName} ${fullname.lastName}`);
+        })
+        .catch((error) => {
+            console.log("Error", error.message);
+        });
 }
 
-solution()
+solution();
