@@ -34,13 +34,7 @@ async function solution() {
     try {
         const [product, price] = await Promise.all([products(id), prices(id)]);
 
-        const result = {
-            id: id,
-            product: product,
-            price: price,
-        };
-
-        console.log(result);
+        console.log({ id, product, price });
     } catch (error) {
         console.log(error.message);
     }
@@ -59,19 +53,15 @@ async function solution() {
     };
 
     results.forEach((result) => {
-        if (result.status === "fulfilled") {
-            typeof result.value === "string"
+        result.status === "fulfilled" &&
+            (typeof result.value === "string"
                 ? (product.product = result.value)
-                : (product.price = result.value);
-        } else {
-            console.error(result.error);
-        }
+                : (product.price = result.value)),
+            result.status === "rejected" && console.error(result.error);
     });
 
     // Log the results, or errors, here
     console.log(product);
-
-    //getProducts()
 }
 
 solution();
