@@ -26,8 +26,13 @@ async function solution() {
     // You generate your id value here
     const id = generateId();
     // You use Promise.all() here
-    const [price, name] = await Promise.all([getPrices(id), getProduct(id)]);
-    const product = { id, product: name, price };
+    const [productPrice, productName] = await Promise.all([
+      getPrices(id),
+      getProduct(id),
+    ]);
+
+    const product = { id, product: productName, price: productPrice };
+
     console.log(`\nResolving with Promise.all:\n`, product);
   } catch (error) {
     // Log the results, or errors, heres
@@ -36,7 +41,6 @@ async function solution() {
 }
 async function solutionAllSettled() {
   const id = generateId();
-  let product = { id };
   const [priceResponse, productResponse] = await Promise.allSettled([
     getPrices(id),
     getProduct(id),
@@ -47,15 +51,24 @@ async function solutionAllSettled() {
     productResponse.status === 'rejected'
   ) {
     // Print the error message
-    console.log(
-      `\nError in Promise.allSettled: `,
-      priceResponse.reason?.message || productResponse.reason?.message
-    );
+    console.log(`\nError in Promise.allSettled:`);
+
+    if (priceResponse.status === 'rejected') {
+      console.log(`\tPrice Error: ${priceResponse.reason.message}`);
+    }
+
+    if (productResponse.status === 'rejected') {
+      console.log(`\tProduct Error: ${productResponse.reason.message}`);
+    }
+
     return;
   }
   // If all promise are resolved assign values
-  product.product = productResponse.value;
-  product.price = priceResponse.value;
+  const product = {
+    id,
+    product: productResponse.value,
+    price: priceResponse.value,
+  };
   //Print result
   console.log('\nResolve in Promise.allSettled\n', product);
 }
