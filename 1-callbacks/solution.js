@@ -2,7 +2,7 @@
 INSTRUCTIONS
 
 1. create an array that contains 5 names, include 1 or more of the allowed usernames located in validate-user.js
-2. iterate the array, keep an eye on performance, afirstnd validate every username with the function exported in validate-user.js
+2. iterate the array, keep an eye on performance, and validate every username with the function exported in validate-user.js
 3. process and format every result, so that the program console.log the success results in a group, and the failure results in a group
 
 Example:
