@@ -25,8 +25,10 @@ const id = yourRandomMethod() //third run
 */
 const getLastName = require('./lastnames');
 const getFirstName = require('./firstnames');
+
 function solution() {
   let firstName, lastname;
+
   const generateRamdonId = () => {
     const id = Math.floor(Math.random() * 101);
     //If the number is multiple of 2 and 3 return a string to force an error
