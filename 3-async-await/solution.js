@@ -21,6 +21,7 @@ Example:
 */
 const getPrices = require('./prices');
 const getProduct = require('./products');
+
 async function solution() {
   try {
     // You generate your id value here
