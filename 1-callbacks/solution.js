@@ -40,26 +40,33 @@ function solution() {
   // If there were names in the terminal access to them and asigned to names variable
   const names = argv.slice(2).length > 0 ? argv.slice(2) : defaultNames;
 
-  let validUsers = 'Success\n',
-    invalidUsers = '\nFailure\n\n',
-    counter = 0;
+  let validUsers = 'Success\n';
+  let invalidUsers = '\nFailure\n\n';
+  let counter = 0;
 
   const callback = function (err, user) {
     // If exists error nested to invaliedUsers
-    if (err) invalidUsers += err.message + '\n';
+    if (err) {
+      invalidUsers += err.message + '\n';
+    }
     // If dont exist error nested valid user
-    else validUsers += `\nid:${user.id}\nname:${user.name}\n`;
+    else {
+      validUsers += `\nid:${user.id}\nname:${user.name}\n`;
+    }
     counter++;
     // If all the names were verifying, print the results
-    if (counter === names.length) console.log(validUsers, invalidUsers);
+    if (counter === names.length) {
+      console.log(validUsers, invalidUsers);
+    }
   };
 
   // iterate the names array and validate them with the method
   names.forEach((name) => {
-    if (name[name.length - 1] === ',') name = name.slice(0, name.length - 1);
+    if (name[name.length - 1] === ',') {
+      name = name.slice(0, name.length - 1);
+    }
     validateUser(name, callback);
   });
-  // log the final result
 }
 
 solution();
