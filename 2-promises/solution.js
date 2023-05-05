@@ -23,17 +23,34 @@ const id = yourRandomMethod() //third run
 6. use promise chaining accordingly, don't forget error handling
 7. log the resultant fullname, or the error, at the end
 */
+const getLastName = require('./lastnames');
+const getFirstName = require('./firstnames');
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  let firstName, lastname;
 
-    // You generate your id value here
-
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  const generateRamdonId = () => {
+    const id = Math.floor(Math.random() * 101);
+    //If the number is multiple of 2 and 3 return a string to force an error
+    return id % 2 === 0 && id % 3 === 0 ? new String(' ') : id;
+  };
+  // You generate your id value here
+  const id = generateRamdonId();
+  // You call the lastnames method with your id
+  getLastName(id)
+    .then((value) => {
+      lastname = value;
+      // You call the firstname method
+      return getFirstName(lastname);
+    })
+    .then((value) => {
+      firstName = value;
+      // You log the fullname, or error, here
+      console.log(`${firstName} ${lastname}`);
+    })
+    .catch((err) => {
+      console.error(`Error: ${err.message}`);
+    });
 }
 
-solution()
+solution();

@@ -19,17 +19,64 @@ Example:
 8. add any needed adjustment to solution() function
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
+const getPrices = require('./prices');
+const getProduct = require('./products');
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
-
+async function solution() {
+  try {
     // You generate your id value here
-
+    const id = generateId();
     // You use Promise.all() here
+    const [productPrice, productName] = await Promise.all([
+      getPrices(id),
+      getProduct(id),
+    ]);
 
-    // You use Promise.allSettled() here
+    const product = { id, product: productName, price: productPrice };
 
-    // Log the results, or errors, here
+    console.log(`\nResolving with Promise.all:\n`, product);
+  } catch (error) {
+    // Log the results, or errors, heres
+    console.log(`\nError in Promise.all: ${error.message}`);
+  }
+}
+async function solutionAllSettled() {
+  const id = generateId();
+  const [priceResponse, productResponse] = await Promise.allSettled([
+    getPrices(id),
+    getProduct(id),
+  ]);
+  // Check if there is any error in the promises
+  if (
+    priceResponse.status === 'rejected' ||
+    productResponse.status === 'rejected'
+  ) {
+    // Print the error message
+    console.log(`\nError in Promise.allSettled:`);
+
+    if (priceResponse.status === 'rejected') {
+      console.log(`\tPrice Error: ${priceResponse.reason.message}`);
+    }
+
+    if (productResponse.status === 'rejected') {
+      console.log(`\tProduct Error: ${productResponse.reason.message}`);
+    }
+
+    return;
+  }
+  // If all promise are resolved assign values
+  const product = {
+    id,
+    product: productResponse.value,
+    price: priceResponse.value,
+  };
+  //Print result
+  console.log('\nResolve in Promise.allSettled\n', product);
+}
+// Helper function to generate an ID
+function generateId() {
+  return parseInt(Date.now().toString().slice(-2));
 }
 
-solution()
+solution();
+solutionAllSettled();
