@@ -1,3 +1,5 @@
+const { argv } = require('process');
+const validateUser = require("./validate-user");
 /*
 INSTRUCTIONS
 
@@ -33,15 +35,40 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // you get your 5 names here
+  // you get your 5 names here
 
-    // iterate the names array and validate them with the method
+  // Using an array:
+  // const users = ["Mary", "Daniel", "Stacy", "Gerardo", "Diego"];
+  
+  // Using process.argv property:
+  const users = argv.slice(2);
 
-    // log the final result
+  // iterate the names array and validate them with the method
+  let successList = "Success\n\n";
+  let failureList = "Failure\n\n";
+  let counter = 0;
+
+  for (const user of users) {
+    validateUser(user, (error, response) => {
+
+      if (error) {
+        failureList += `${error.message}\n`;
+        counter++;
+      } else {
+        successList += `id: ${response.id} \nname: ${response.name}\n`;
+        counter++;
+      }
+
+      // log the final result
+      if (counter === users.length) {
+        console.log(successList);
+
+        console.log(failureList);
+      }
+    });
+  }
 }
 
-solution()
-
-
+solution();

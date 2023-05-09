@@ -1,3 +1,6 @@
+const { Console } = require("console");
+const products = require("./products");
+const prices = require("./prices");
 /*
 INSTRUCTIONS
 
@@ -20,16 +23,87 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+async function solution() {
+  // YOUR SOLUTION GOES HERE
+  // You generate your id value here
+  const id = String(Date.now()).slice(-2);
 
-    // You generate your id value here
+  // You use Promise.all() here
+  let resultAll;
+  let errorAll;
+  let resultAny;
+  let errorAny;
+  let resultRace;
+  let errorRace;
 
-    // You use Promise.all() here
+  try {
+    resultAll = await Promise.all([products(id), prices(id)]);
+  } catch (error) {
+    errorAll = error.message;
+  }
 
-    // You use Promise.allSettled() here
+  // You use Promise.allSettled() here
+  const resultAllSettled = await Promise.allSettled([products(id), prices(id)]);
 
-    // Log the results, or errors, here
+  // Using Promise.any()
+  try {
+    resultAny = await Promise.any([products(id), prices(id)]);
+  } catch (error) {
+    errorAny = error.message;
+  }
+
+  // Using Promise.race()
+  try {
+    resultRace = await Promise.race([products(id), prices(id)]);
+  } catch (error) {
+    errorRace = error.message;
+  }
+
+  // Log the results, or errors, here
+  console.log("\n---------- With Promise.all() ---------");
+
+  if (errorAll) {
+    console.log(`One of the promises was rejected: ${errorAll}`);
+  } else {
+    const data = { id, product: resultAll[0], price: resultAll[1] };
+    console.log(data);
+  }
+
+  console.log("\n------ With Promise.allSettled() ------");
+
+  if (resultAllSettled[0].status === "rejected") {
+    console.log(
+      `The first promise was rejected: ${resultAllSettled[0].reason.message}`
+    );
+  }
+
+  if (resultAllSettled[1].status === "rejected") {
+    console.log(
+      `The second promise was rejected: ${resultAllSettled[1].reason.message}`
+    );
+  }
+  const data = {
+    id,
+    product: resultAllSettled[0].value,
+    price: resultAllSettled[1].value,
+  };
+  console.log(data);
+
+  console.log("\n---------- With Promise.any() ---------");
+
+  if (errorAny) {
+    console.log(errorAny);
+  } else {
+    console.log(`The first fulfilled value is ${resultAny}`);
+  }
+
+  console.log("\n--------- With Promise.race() ---------");
+
+  if (errorRace) {
+    console.log(`The first settled value is an error: ${errorRace}`);
+  } else {
+    console.log(`The first settled value is ${resultRace}`);
+  }
 }
 
-solution()
+solution();
