@@ -1,29 +1,25 @@
+const { promisify } = require("util");
+const validateUser = require("./validate-user");
+
 async function solution() {
   const users = ["Mary", "Daniel", "Stacy", "Gerardo", "Diego"];
 
-  const validateUser = require("./validate-user");
-  const { promisify } = require("util");
+  let successList = 'Success\n\n';
+  let failureList = 'Failure\n\n';
 
-  const successList = [],
-    failureList = [];
   for (const user of users) {
     const validateUserPromisify = promisify(validateUser);
+
     try {
       const result = await validateUserPromisify(user);
-      successList.push(result);
+      successList += `id: ${result.id} \nname: ${result.name}\n`;
     } catch (error) {
-      failureList.push(error.message);
+      failureList += `${error.message}\n`;
     }
   }
 
-  console.log("Success\n");
-  for (const user of successList) {
-    console.log(`id: ${user.id} \nname: ${user.name}\n`);
-  }
-  console.log("Failure\n");
-  for (const message of failureList) {
-    console.log(message);
-  }
+  console.log(successList);
+  console.log(failureList);
 }
 
 solution();

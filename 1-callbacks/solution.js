@@ -1,3 +1,5 @@
+const { argv } = require('process');
+const validateUser = require("./validate-user");
 /*
 INSTRUCTIONS
 
@@ -41,30 +43,29 @@ function solution() {
   // const users = ["Mary", "Daniel", "Stacy", "Gerardo", "Diego"];
   
   // Using process.argv property:
-  const { argv } = require('process');
-  const users = argv.filter((item, index) => index > 1);
+  const users = argv.slice(2);
 
   // iterate the names array and validate them with the method
-  const validateUser = require("./validate-user");
-  const successList = [],
-  failureList = [];
+  let successList = "Success\n\n";
+  let failureList = "Failure\n\n";
+  let counter = 0;
+
   for (const user of users) {
     validateUser(user, (error, response) => {
+
       if (error) {
-        failureList.push(error.message);
+        failureList += `${error.message}\n`;
+        counter++;
       } else {
-        successList.push(response);
+        successList += `id: ${response.id} \nname: ${response.name}\n`;
+        counter++;
       }
+
       // log the final result
-      if (failureList.length + successList.length === users.length) {
-        console.log("Success\n");
-        for (const user of successList) {
-          console.log(`id: ${user.id} \nname: ${user.name}\n`);
-        }
-        console.log("Failure\n");
-        for (const message of failureList) {
-          console.log(message);
-        }
+      if (counter === users.length) {
+        console.log(successList);
+
+        console.log(failureList);
       }
     });
   }
