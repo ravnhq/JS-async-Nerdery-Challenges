@@ -1,3 +1,6 @@
+const { Console } = require("console");
+const products = require("./products");
+const prices = require("./prices");
 /*
 INSTRUCTIONS
 
@@ -20,18 +23,19 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-const { Console } = require("console");
-
 async function solution() {
   // YOUR SOLUTION GOES HERE
-  const products = require("./products");
-  const prices = require("./prices");
-
   // You generate your id value here
   const id = String(Date.now()).slice(-2);
 
   // You use Promise.all() here
-  let resultAll, errorAll;
+  let resultAll;
+  let errorAll;
+  let resultAny;
+  let errorAny;
+  let resultRace;
+  let errorRace;
+
   try {
     resultAll = await Promise.all([products(id), prices(id)]);
   } catch (error) {
@@ -42,7 +46,6 @@ async function solution() {
   const resultAllSettled = await Promise.allSettled([products(id), prices(id)]);
 
   // Using Promise.any()
-  let resultAny, errorAny;
   try {
     resultAny = await Promise.any([products(id), prices(id)]);
   } catch (error) {
@@ -50,7 +53,6 @@ async function solution() {
   }
 
   // Using Promise.race()
-  let resultRace, errorRace;
   try {
     resultRace = await Promise.race([products(id), prices(id)]);
   } catch (error) {
@@ -59,6 +61,7 @@ async function solution() {
 
   // Log the results, or errors, here
   console.log("\n---------- With Promise.all() ---------");
+
   if (errorAll) {
     console.log(`One of the promises was rejected: ${errorAll}`);
   } else {
@@ -67,11 +70,13 @@ async function solution() {
   }
 
   console.log("\n------ With Promise.allSettled() ------");
+
   if (resultAllSettled[0].status === "rejected") {
     console.log(
       `The first promise was rejected: ${resultAllSettled[0].reason.message}`
     );
   }
+
   if (resultAllSettled[1].status === "rejected") {
     console.log(
       `The second promise was rejected: ${resultAllSettled[1].reason.message}`
@@ -85,6 +90,7 @@ async function solution() {
   console.log(data);
 
   console.log("\n---------- With Promise.any() ---------");
+
   if (errorAny) {
     console.log(errorAny);
   } else {
@@ -92,6 +98,7 @@ async function solution() {
   }
 
   console.log("\n--------- With Promise.race() ---------");
+
   if (errorRace) {
     console.log(`The first settled value is an error: ${errorRace}`);
   } else {
