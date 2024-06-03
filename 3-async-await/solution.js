@@ -20,15 +20,68 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
+const products = require("./products")
+const prices = require("./prices")
+
+async function getProductAndPriceOrError(id) {
+    try {
+        const [product, price] = await Promise.all([products(id), prices(id)]);
+        return { id, product, price };
+    } catch (error) {
+        throw error
+    }
+}
+
+async function getProductOrPriceOrError(id) {
+    const [productWithStatus, priceWithStatus] = await Promise.allSettled([products(id), prices(id)]);
+
+    let productOrError, priceOrError;
+
+    // Handle different conditions for product and price
+    if (productWithStatus.status === "fulfilled" && priceWithStatus.status === "fulfilled") {
+        productOrError = productWithStatus.value;
+        priceOrError = priceWithStatus.value;
+    } else {
+        if (productWithStatus.status === "rejected" && priceWithStatus.status === "fulfilled") {
+            productOrError = `Product not found for ID: ${id}, should have price: ${priceWithStatus.value}`;
+            priceOrError = priceWithStatus.value;
+        } else if (priceWithStatus.status === "rejected" && productWithStatus.status === "fulfilled") {
+            productOrError = productWithStatus.value;
+            priceOrError = `Price not found for product: ${productWithStatus.value} with ID: ${id}`;
+        } else if (productWithStatus.status === "rejected" && priceWithStatus.status === "rejected") {
+            throw new Error(`No Product or Price found for ID: ${id}`);
+        }
+    }
+
+    return { id, productOrError, priceOrError };
+}
+
+function printProductInformationResult(id, product, price) {
+    console.log(`ID: ${id}, PRODUCT: ${product}, PRICE: ${price}`);
+}
+
+async function solution() {
     // YOUR SOLUTION GOES HERE
 
     // You generate your id value here
+    let firstId = Date.now() % 100;
 
     // You use Promise.all() here
+    try {
+        result = await getProductAndPriceOrError(firstId);
+        printProductInformationResult(result.id, result.product, result.price);
+    } catch (error) {
+        console.log(error.message);
+    }        
 
     // You use Promise.allSettled() here
-
+    let secondId = Date.now() % 100;
+    try {
+        result = await getProductOrPriceOrError(secondId);
+        printProductInformationResult(result.id, result.productOrError, result.priceOrError);
+    } catch (error) {
+        console.log(error.message);
+    }
     // Log the results, or errors, here
 }
 

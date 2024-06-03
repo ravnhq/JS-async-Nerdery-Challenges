@@ -24,16 +24,51 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const lastnames = require("./lastnames");
+const firstnames = require("./firstnames");
+
+function getRandomOrInvalidId() {
+    let randomValue;
+    switch (Math.floor(Math.random() * 10)) {
+        case 0:
+            randomValue = undefined;
+            break;
+        case 1:
+            randomValue = null;
+            break;
+        case 2:
+            randomValue = Boolean();
+            break;
+        case 3:
+            randomValue = String();
+            break;
+        default:
+            randomValue = Math.floor(Math.random() * 10);
+    }
+    return randomValue;
+}
+
 function solution() {
     // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
+    for (let iterator = 0; iterator < 15; iterator++) {
+        // You generate your id value here
+        const id = getRandomOrInvalidId();
 
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+        // You call the lastnames method with your id
+        lastnames(id)
+            // You call the firstname method
+            .then(lastname => { 
+                return firstnames(lastname).then(firstname => ({ firstname, lastname }));
+            })
+            // You log the fullname, or error, here
+            .then(({ firstname, lastname }) => {
+                console.log(`${firstname} ${lastname}`);
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
+    }
 }
 
 solution()
