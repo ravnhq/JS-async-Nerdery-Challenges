@@ -24,16 +24,34 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const lastnames = require("./lastnames.js");
+const firstnames = require("./firstnames.js");
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
 
-    // You generate your id value here
+  // You generate your id value here
+  const createRandom = () => {
+    return Math.floor(Math.random() * 100);
+  };
 
-    // You call the lastnames method with your id
+  const id = createRandom();
+  let lastname = "";
 
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  // You call the lastnames method with your id
+  lastnames(id)
+    .then((res) => {
+      // You call the firstname method
+      lastname = res;
+      return firstnames(res);
+    })
+    .then((res) => {
+      console.log(`${res} ${lastname}`);
+    })
+    .catch((error) => {
+      // You log the fullname, or error, here
+      console.log(error.message);
+    });
 }
 
-solution()
+solution();

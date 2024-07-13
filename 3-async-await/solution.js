@@ -19,17 +19,72 @@ Example:
 8. add any needed adjustment to solution() function
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
+const prices = require("./prices.js");
+const products = require("./products.js");
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
+  // You generate your id value here
+  const idGenerator = () => {
+    return Date.now().toString().slice(-2);
+  };
+  const id = idGenerator();
 
-    // You generate your id value here
+  // You use Promise.all() here
+  const promiseAll = async () => {
+    try {
+      const [price, product] = await Promise.all([prices(id), products(id)]);
+      return {
+        way: "promiseAll",
+        result: { id: id, product: product, price: price },
+      };
+    } catch (error) {
+      throw error;
+    }
+  };
 
-    // You use Promise.all() here
+  // You use Promise.allSettled() here
+  const promiseAllSettled = async () => {
+    try {
+      const [priceResponse, productResponse] = await Promise.allSettled([
+        prices(id),
+        products(id),
+      ]);
+      if (
+        priceResponse.status == "fulfilled" &&
+        productResponse.status == "fulfilled"
+      ) {
+        return {
+          way: "promiseAllSettled",
+          result: {
+            id: id,
+            product: priceResponse.value,
+            price: priceResponse.value,
+          },
+        };
+      } else {
+        throw Error("This is a forced internal error");
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
 
-    // You use Promise.allSettled() here
+  // Log the results, or errors, here
+  const promiseRace = async () => {
+    try {
+      const { way, result } = await Promise.race([
+        promiseAll(),
+        promiseAllSettled(),
+      ]);
+      console.log(`${way} was faster`);
+      console.log(result);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
-    // Log the results, or errors, here
+  promiseRace();
 }
 
-solution()
+solution();
