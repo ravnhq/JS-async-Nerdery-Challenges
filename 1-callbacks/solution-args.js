@@ -31,7 +31,14 @@ node solution.js name1 name2 name3
 5. another challenge is: after you solve the challenge using callback style, in another file promisify the callback and solve it again
 ** give a look to node.js util.promisify, avoid to alter the validate-user.file **
 */
-const usernames = ['John', 'Mary', 'Michael', 'Benjamin', 'Jane'];
+const args = process.argv.slice(2);
+
+if (args.length === 0) {
+    console.log("Please provide a list of names.");
+    process.exit(1);
+}
+
+const usernames = args
 const validateUser = require('./validate-user');
 
 const successResults = [];
@@ -43,13 +50,16 @@ function solution() {
           if (err) {
             failureResults.push(err.message);
           } else {
-            successResults.push(`id: ${result.id}\nname: ${result.name}\n`);
+            successResults.push(`User: ${result.name}, ID: ${result.id}`);
           }
       
+          // After the last iteration, print the results
           if (successResults.length + failureResults.length === usernames.length) {
+            // Log success results
             console.log("Success Results:");
             successResults.forEach(result => console.log(result));
       
+            // Log failure results
             console.log("\nFailure Results:");
             failureResults.forEach(result => console.log(result));
           }
