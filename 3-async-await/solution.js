@@ -20,16 +20,95 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const getProduct = require('./products');
+const getPrice = require('./prices');
 
-    // You generate your id value here
+async function solution() {
+	// YOUR SOLUTION GOES HERE
+	let text = { id, product: null, price: null };
 
-    // You use Promise.all() here
+	// You generate your id value here
+	let id = Date.now().toString().slice(-2);
 
-    // You use Promise.allSettled() here
+	// You use Promise.all() here
+	console.log('----segment of Promise.all():');
+	try {
+		await Promise.all([
+			(async () => {
+				const product = await getProduct(+id);
+				text.product = product;
+			})(),
+			(async () => {
+				const price = await getPrice(+id);
+				text.price = price;
+			})(),
+		]);
 
-    // Log the results, or errors, here
+		console.log(text);
+	} catch (error) {
+		console.log(`without data for the id: ${id}`);
+	}
+
+	// You use Promise.allSettled() here
+	console.log('\n----segment of Promise.allSettled():');
+	const promiseSettled = await Promise.allSettled([
+		getPrice(+id),
+		getProduct(+id),
+	]);
+
+	let result = promiseSettled.map((v) => {
+		if (v.status === 'fulfilled') {
+			return v.value;
+		}
+
+		return 'not found';
+	});
+
+	text.price = result[0];
+	text.product = result[1];
+
+	// Log the results, or errors, here
+	console.log(text);
+
+	// You use Promise.any() here
+	console.log('\n----segment of Promise.any():');
+
+	try {
+		const promiseRaced = await Promise.any([getPrice(+id), getProduct(+id)]);
+
+		if (!isNaN(Number(promiseRaced))) {
+			text.price = promiseRaced;
+			delete text.product;
+		} else {
+			text.product = promiseRaced;
+			delete text.price;
+		}
+
+		// Log the results, or errors, here
+		console.log(text);
+	} catch (error) {
+		console.log(`without data for the id: ${id}`);
+	}
+
+	// You use Promise.race() here
+	console.log('\n----segment of Promise.race():');
+
+	try {
+		const promiseRaced = await Promise.race([getPrice(+id), getProduct(+id)]);
+
+		if (!isNaN(Number(promiseRaced))) {
+			text.price = promiseRaced;
+			delete text.product;
+		} else {
+			text.product = promiseRaced;
+			delete text.price;
+		}
+
+		// Log the results, or errors, here
+		console.log(text);
+	} catch (error) {
+		console.log(`without data for the id: ${id}`);
+	}
 }
 
-solution()
+solution();
