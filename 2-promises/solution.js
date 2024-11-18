@@ -24,16 +24,42 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const firstnamesAsync = require("./firstnames");
+const lastnamesAsync = require("./lastnames");
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  // YOUR SOLUTION GOES HERE
+  const yourRandomMethod = () => {
+    let randomNumber = Math.round(Math.random() * 100);
+    if (randomNumber <= 60) {
+      return randomNumber;
+    } else if (randomNumber < 80) {
+      return { id: randomNumber };
+    } else {
+      return true;
+    }
+  };
+  // You generate your id value here
+  // You call the lastnames method with your id
+  // You call the firstname method
+  // You log the fullname, or error, here
 
-    // You generate your id value here
-
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  const id = yourRandomMethod();
+  lastnamesAsync(id)
+    .then((lastName) => {
+      firstnamesAsync(lastName)
+        .then((firstName) => console.log(`${firstName} ${lastName}`))
+        .catch((e) => console.log(`ERROR: ${e.message}`));
+    })
+    .catch((e) => console.log(`ERROR: ${e.message}`));
 }
 
-solution()
+solution();
+solution();
+solution();
+solution();
+solution();
+solution();
+solution();
+solution();
+solution();

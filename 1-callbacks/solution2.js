@@ -33,6 +33,7 @@ node solution.js name1 name2 name3
 */
 
 const { validateUser, printResults } = require("./validate-user");
+const util = require("util");
 
 function solution() {
   // YOUR SOLUTION GOES HERE
@@ -42,26 +43,28 @@ function solution() {
   // you get your 5 names here
   let sampleUsers = ["Ronald", "Mary", "Ris", "Stacy", "Ashley"];
 
-  //Reading from console
+  //Reading from console: node solution2.js Ronald Kai Jonh John Mary Richard Stacy
   if (process.argv.length > 2) {
     sampleUsers = process.argv.slice(2);
   }
-  let count = sampleUsers.length;
 
-  if (count == 0) printResults([], []);
+  const validateUserAsync = util.promisify(validateUser);
 
   // iterate the names array and validate them with the method
-  sampleUsers.forEach((name) =>
-    validateUser(name, (error, data) => {
-      if (error) {
-        failureUser.push(error.message);
-      } else {
-        successUser.push(data);
-      }
-      count--;
-      if (count === 0) printResults(successUser, failureUser);
+  const promises = sampleUsers.map((name) => validateUserAsync(name));
+  Promise.allSettled(promises)
+    .then((results) => {
+      results.forEach((r) => {
+        if (r.status === "rejected") {
+          failureUser.push(r.reason.message);
+          return;
+        }
+        successUser.push(r.value);
+      });
     })
-  );
+    .finally(() => {
+      printResults(successUser, failureUser);
+    });
 }
 
 solution();

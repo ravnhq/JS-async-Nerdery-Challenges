@@ -18,3 +18,24 @@ This repo provides a series of exercises to put your js async understanding into
 
 1. basic understanding of JS and Node.js
 2. Node.js 16, or later
+
+## Run solutions
+
+1. Callbacks:
+
+```console
+ node 1-callbacks/solution.js 
+ node 1-callbacks/solution2.js Ronald Ris Mary Stacy Ashley 
+```
+
+2. Promises:
+
+```console
+ node 2-promises/solution.js
+```
+
+3. Asyn-await:
+
+```console
+ node 3-async-await/solution.js 
+```
