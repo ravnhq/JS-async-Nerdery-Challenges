@@ -18,3 +18,25 @@ This repo provides a series of exercises to put your js async understanding into
 
 1. basic understanding of JS and Node.js
 2. Node.js 16, or later
+
+## Run test
+You can run all the test using the following command:
+
+```console
+npm run test 
+```
+
+Or you can run only a specific test suite using its name:
+
+```console
+npm run test asyncAwait.any
+npm run test promises 
+```
+
+Or a group of test:
+
+```console
+npm run test asyncAwait
+```
+
+Or any variation of above

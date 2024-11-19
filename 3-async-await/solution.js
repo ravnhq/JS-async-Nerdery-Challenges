@@ -20,16 +20,95 @@ Example:
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const pricesAsync = require("./prices");
+const productsAsync = require("./products");
 
-    // You generate your id value here
+/**
+ *
+ * @param {*} id positive number
+ * @returns returns either:
+ *                    - a string with the error message or
+ *                    - an object as follow: { id: 1, price: 0.5, product: "salt" }
+ */
 
-    // You use Promise.all() here
+const promiseAllSolution = async (id) => {
+  try {
+    let [price, product] = await Promise.all([
+      pricesAsync(id),
+      productsAsync(id),
+    ]);
+    return {
+      id,
+      price,
+      product,
+    };
+  } catch (error) {
+    return "Error: " + error.message;
+  }
+};
 
-    // You use Promise.allSettled() here
+const promiseAllSettledSolution = async (id) => {
+  const [price, product] = await Promise.allSettled([
+    pricesAsync(id),
+    productsAsync(id),
+  ]);
 
-    // Log the results, or errors, here
-}
+  //if no reason -> undefine on .reason property
+  let errorReasons = price.reason ?? "";
+  errorReasons += errorReasons ? " " : ""; //separation space
+  errorReasons += product.reason ?? "";
 
-solution()
+  if (errorReasons) {
+    return errorReasons;
+  }
+
+  return {
+    id,
+    price: price.value,
+    product: product.value,
+  };
+};
+
+const promiseRaceSolution = async (id) => {
+  try {
+    //promise race get first to be done (either resolve or rejected)
+    let product = await Promise.race([productsAsync(id), productsAsync(id)]);
+    let price = await Promise.race([pricesAsync(id), pricesAsync(id)]);
+
+    return {
+      id,
+      price,
+      product,
+    };
+  } catch (error) {
+    return "Error: " + error.message;
+  }
+};
+
+const promiseAnySolution = async (id) => {
+  try {
+    //promise any get first to be done successfully resolved!
+    let product = await Promise.any([productsAsync(id), productsAsync(id)]);
+    let price = await Promise.any([pricesAsync(id), pricesAsync(id)]);
+
+    return {
+      id,
+      price,
+      product,
+    };
+  } catch (error) {
+    //Handle internal errors
+    let additionalDetails = error?.errors?.map((e) => e.message).join(" | ");
+    if (additionalDetails) {
+      return "Error: " + error.message + " - DETAILS: " + additionalDetails;
+    }
+    return "Error: " + error.message + additionalDetails;
+  }
+};
+
+module.exports = {
+  promiseAllSolution,
+  promiseAllSettledSolution,
+  promiseRaceSolution,
+  promiseAnySolution,
+};

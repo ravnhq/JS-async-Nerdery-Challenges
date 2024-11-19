@@ -33,6 +33,8 @@ node solution.js name1 name2 name3
 */
 
 const { validateUser, printResults } = require("./validate-user");
+const util = require("util");
+
 /**
  *
  * @param {*} sampleUsers : string[] an array of names
@@ -43,25 +45,27 @@ const { validateUser, printResults } = require("./validate-user");
 
 function solution(sampleUsers, cb) {
   // YOUR SOLUTION GOES HERE
-
-  if (sampleUsers.length == 0) cb([], []);
-
   const successUser = [];
   const failureUser = [];
 
-  let count = sampleUsers.length;
+  const validateUserAsync = util.promisify(validateUser);
+
   // iterate the names array and validate them with the method
-  sampleUsers.forEach((name) =>
-    validateUser(name, (error, data) => {
-      if (error) {
-        failureUser.push(error.message);
-      } else {
-        successUser.push(data);
-      }
-      count--;
-      if (count === 0) cb(successUser, failureUser);
+  const promises = sampleUsers.map((name) => validateUserAsync(name));
+  Promise.allSettled(promises)
+    .then((results) => {
+      results.forEach((r) => {
+        if (r.status === "rejected") {
+          failureUser.push(r.reason.message);
+          return;
+        }
+        successUser.push(r.value);
+      });
     })
-  );
+    .finally(() => {
+      // printResults(successUser, failureUser);
+      cb(successUser, failureUser);
+    });
 }
 
 module.exports = solution;

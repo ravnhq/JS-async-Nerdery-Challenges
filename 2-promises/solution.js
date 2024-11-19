@@ -24,16 +24,28 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+const firstnamesAsync = require("./firstnames");
+const lastnamesAsync = require("./lastnames");
 
-    // You generate your id value here
+/**
+ *
+ * @param {*} id identifies, should be a number, but it can be anything else. It has to be handled on catches
+ * @param {*} cb function(text) - callback function
+ *      text: string return either the "firstname username" from id user or the error message
+ */
+function solution(id, cb) {
+  // YOUR SOLUTION GOES HERE
+  // You generate your id value here
+  // You call the lastnames method with your id
+  // You call the firstname method
+  // You log the fullname, or error, here
 
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  lastnamesAsync(id)
+    .then((lastName) => {
+      firstnamesAsync(lastName)
+        .then((firstName) => cb(`${firstName} ${lastName}`))
+        .catch((e) => cb(`ERROR: ${e.message}`));
+    })
+    .catch((e) => cb(`ERROR: ${e.message}`));
 }
-
-solution()
+module.exports = solution;
