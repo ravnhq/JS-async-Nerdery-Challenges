@@ -24,16 +24,37 @@ const id = yourRandomMethod() //third run
 7. log the resultant fullname, or the error, at the end
 */
 
+const lastnames = require("./lastnames.js");
+const firstnames = require("./firstnames.js");
+
+const generateRandomId = () => {
+  const isValid = Math.random() > 0.5;
+
+  if (isValid) {
+    return Math.floor(Math.random() * 101);
+  } else {
+    const invalidValues = ["chepe", null, undefined, []];
+    return invalidValues[Math.floor(Math.random() * invalidValues.length)];
+  }
+};
+
+const fetchNames = (id) => {
+  return lastnames(id)
+    .then((lastname) =>
+      firstnames(lastname).then((firstname) => `${firstname} ${lastname}`)
+    )
+    .catch((e) => `Error(${id}): ${e.message || "Error"})`);
+};
+
 function solution() {
-    // YOUR SOLUTION GOES HERE
+  const numberOfIds = 5;
+  const IDs = Array.from({ length: numberOfIds }, generateRandomId);
 
-    // You generate your id value here
-
-    // You call the lastnames method with your id
-
-    // You call the firstname method
-
-    // You log the fullname, or error, here
+  Promise.all(IDs.map((id) => fetchNames(id))).then((names) => {
+    names.forEach((name) => {
+      console.log(`${name}\n`);
+    });
+  });
 }
 
-solution()
+solution();
