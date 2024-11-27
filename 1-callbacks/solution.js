@@ -1,3 +1,9 @@
+const validate = require('./validate-user.js')
+const { argv } = require('node:process')
+const util = require('util')
+
+const promisiedValidate = util.promisify(validate)
+
 /*
 INSTRUCTIONS
 
@@ -33,13 +39,44 @@ node solution.js name1 name2 name3
 */
 
 function solution() {
-    // YOUR SOLUTION GOES HERE
+    const inputUsers = argv.slice(2)
+    let testUsers = ["John", "Mary", "Richard", "Javier", "Fernando"]
+    const succesUsers = []
+    const errorUsers = []
 
-    // you get your 5 names here
+    if(inputUsers.length === 1 && inputUsers[0].includes(',')){
+        testUsers = inputUsers[0].split(',')
+    }else if(inputUsers.length > 1){
+        testUsers = inputUsers
+    }
 
-    // iterate the names array and validate them with the method
+    const printResults = () => {
+        console.log('\nSuccess')
+        console.group()
+        succesUsers.forEach(user => {
+            console.log(`\nid: ${user.id}\nname: ${user.name}`)
+        })
+        console.groupEnd()
 
-    // log the final result
+        console.log('\nFailure')
+        console.group()
+        errorUsers.forEach(error => {
+            console.log(error)
+        })
+        console.groupEnd()
+    }
+
+    for (const user of testUsers) {
+        const a = promisiedValidate(user).then((data)=>{
+            succesUsers.push(data)
+        }).catch((error)=>{
+            errorUsers.push(error.message)
+        }).finally(()=>{
+            if(succesUsers.length + errorUsers.length === testUsers.length){
+                printResults()
+            }
+        })
+    }
 }
 
 solution()
