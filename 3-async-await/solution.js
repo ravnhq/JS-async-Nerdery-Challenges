@@ -19,17 +19,63 @@ Example:
 8. add any needed adjustment to solution() function
 9. as extra challenge: add Promise.race() and Promise.any(), and try to get the idea of what happens
 */
+const itemProducts = require('./products');
+const pricesProducts = require('./prices');
 
-function solution() {
-    // YOUR SOLUTION GOES HERE
+async function solution() {
+    const id = Date.now() % 100
 
-    // You generate your id value here
+    try {
+        const [product, price] = await Promise.all([
+            itemProducts(id),
+            pricesProducts(id)
+        ]);
 
-    // You use Promise.all() here
+        console.log("promise.all:",{id: id},'\n',
+            { product: product },'\n',
+            { price: price });
 
-    // You use Promise.allSettled() here
+    } catch (error) {
+        console.error('Error Promise.all:', error.message);
+    }
 
-    // Log the results, or errors, here
+    const results = await Promise.allSettled([
+        itemProducts(id),
+        pricesProducts(id)
+    ]);
+
+    results.forEach((result, index) => {
+        if (result.status === 'fulfilled') {
+            console.log(`Result promise.allSettled: ${index + 1}:`, result.value);
+        } else {
+            console.error(`Error ${index + 1}:`, result.reason);
+        }
+    });
+
+
+
+    
+
+    // Extra challenge: Use Promise.race() and Promise.any()
+    try {
+        const raceResult = await Promise.race([
+            itemProducts(id),
+            pricesProducts(id)
+        ]);
+        console.log('Promise.race result:', raceResult);
+    } catch (error) {
+        console.error('Error Promise.race:', error);
+    }
+
+    try {
+        const anyResult = await Promise.any([
+            itemProducts(id),
+            pricesProducts(id)
+        ]);
+        console.log('Promise.any result:', anyResult);
+    } catch (error) {
+        console.error('Error Promise.any:', error);
+    }
 }
 
-solution()
+solution();
